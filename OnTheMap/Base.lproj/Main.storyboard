@@ -93,9 +93,23 @@
                     <view key="view" contentMode="scaleToFill" id="HUj-fy-KHV">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="e84-RT-TLh">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                            </mapView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="e84-RT-TLh" firstAttribute="top" secondItem="Tdg-XG-OwN" secondAttribute="bottom" id="LNS-zw-1IR"/>
+                            <constraint firstItem="e84-RT-TLh" firstAttribute="leading" secondItem="HUj-fy-KHV" secondAttribute="leading" id="TIz-nQ-9WR"/>
+                            <constraint firstItem="fvb-56-Xqh" firstAttribute="top" secondItem="e84-RT-TLh" secondAttribute="bottom" id="Xhn-us-Lux"/>
+                            <constraint firstAttribute="trailing" secondItem="e84-RT-TLh" secondAttribute="trailing" id="h4m-9P-Vd9"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="On The Map" id="SDH-zy-Gto"/>
+                    <connections>
+                        <outlet property="mapView" destination="e84-RT-TLh" id="bZT-G7-IVd"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gvC-LA-QiJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

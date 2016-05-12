@@ -7,7 +7,11 @@
 //
 
 import UIKit
+import MapKit
 
 class StudentMapViewController: UIViewController {
+    
+    @IBOutlet weak var mapView: MKMapView!
+    
     
 }
