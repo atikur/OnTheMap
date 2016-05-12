@@ -21,6 +21,9 @@ class StudentMapViewController: UIViewController {
         
         initialLocation = CLLocation(latitude: 37.3230, longitude: -122.0322)
         centerMapOnLocaion(initialLocation)
+        
+        let sampleAnnotation = StudentLocationAnnotation(name: "John Doe", mediaURL: "http://www.example.com", coordinate: CLLocationCoordinate2D(latitude: 37.3230, longitude: -122.0322))
+        mapView.addAnnotation(sampleAnnotation)
     }
     
     func centerMapOnLocaion(location: CLLocation) {
