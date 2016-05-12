@@ -82,10 +82,10 @@
             </objects>
             <point key="canvasLocation" x="-273" y="901"/>
         </scene>
-        <!--Item 1-->
+        <!--On The Map-->
         <scene sceneID="WOJ-3k-lQl">
             <objects>
-                <viewController id="r7s-7s-oRd" sceneMemberID="viewController">
+                <viewController id="r7s-7s-oRd" customClass="StudentMapViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Tdg-XG-OwN"/>
                         <viewControllerLayoutGuide type="bottom" id="fvb-56-Xqh"/>
@@ -95,11 +95,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 1" id="ZLL-wd-IuD"/>
+                    <navigationItem key="navigationItem" title="On The Map" id="SDH-zy-Gto"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gvC-LA-QiJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1301" y="571"/>
+            <point key="canvasLocation" x="2113" y="571"/>
         </scene>
         <!--On The Map-->
         <scene sceneID="ihX-zW-Ko3">
@@ -140,7 +140,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="r7s-7s-oRd" kind="relationship" relationship="viewControllers" id="Wcc-P0-sN8"/>
+                        <segue destination="1xe-i1-ROU" kind="relationship" relationship="viewControllers" id="Wcc-P0-sN8"/>
                         <segue destination="xDc-pj-fgl" kind="relationship" relationship="viewControllers" id="zrA-MH-cUF"/>
                     </connections>
                 </tabBarController>
@@ -152,7 +152,7 @@
         <scene sceneID="uUk-b8-OBc">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xDc-pj-fgl" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="List" id="eUF-yq-ysh"/>
+                    <tabBarItem key="tabBarItem" title="List" image="list" id="eUF-yq-ysh"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="agS-Rh-hLJ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -167,5 +167,28 @@
             </objects>
             <point key="canvasLocation" x="1301" y="1258"/>
         </scene>
+        <!--Map-->
+        <scene sceneID="KLY-Te-f5e">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="1xe-i1-ROU" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Map" image="map" id="ZLL-wd-IuD"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lGk-hl-pTR">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="r7s-7s-oRd" kind="relationship" relationship="rootViewController" id="fzY-Cj-XnI"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eOg-bE-pCz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1301" y="571"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="list" width="22" height="21"/>
+        <image name="map" width="22" height="18"/>
+    </resources>
 </document>
