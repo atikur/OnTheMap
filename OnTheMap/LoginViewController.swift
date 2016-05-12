@@ -61,7 +61,10 @@ class LoginViewController: UIViewController {
             }
             
             self.otmClient.udacitySessionID = sessionID
-            self.updateInfoLabel("Successfully logged in.")
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.performSegueWithIdentifier("UserLoggedIn", sender: nil)
+            }
         }
     }
 }
