@@ -56,7 +56,15 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        print("tapped")
+        guard let annotation = view.annotation as? StudentLocationAnnotation else {
+            return
+        }
+        
+        guard let url = NSURL(string: annotation.mediaURL) else {
+            return
+        }
+        
+        UIApplication.sharedApplication().openURL(url)
     }
     
 }
