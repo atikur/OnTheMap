@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class StudentMapViewController: UIViewController {
+class StudentMapViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -18,6 +18,8 @@ class StudentMapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mapView.delegate = self
         
         initialLocation = CLLocation(latitude: 37.3230, longitude: -122.0322)
         centerMapOnLocaion(initialLocation)
@@ -29,6 +31,32 @@ class StudentMapViewController: UIViewController {
     func centerMapOnLocaion(location: CLLocation) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRedius * 2, regionRedius * 2)
         mapView.setRegion(coordinateRegion, animated: true)
+    }
+    
+    // MARK: - MKMapViewDelegate Methods
+    
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        guard let annotation = annotation as? StudentLocationAnnotation else {
+            return nil
+        }
+        
+        let identifier = "studentLocationPin"
+        let view: MKPinAnnotationView
+        
+        if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? MKPinAnnotationView {
+            dequeuedView.annotation = annotation
+            view = dequeuedView
+        } else {
+            view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            view.canShowCallout = true
+            view.calloutOffset = CGPointMake(-5, 5)
+            view.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)
+        }
+        return view
+    }
+    
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        print("tapped")
     }
     
 }
