@@ -11,6 +11,8 @@ import Foundation
 class OTMClient: NSObject {
     
     let session = NSURLSession.sharedSession()
+    
+    var studentList = [StudentInformation]()
 
     var udacitySessionID: String?
     var udacityUserID: Int?

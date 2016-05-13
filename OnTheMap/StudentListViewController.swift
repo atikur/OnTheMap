@@ -11,40 +11,22 @@ import UIKit
 class StudentListViewController: UITableViewController {
     
     let otmClient = OTMClient.sharedInstance()
-    var studentLocations = [StudentInformation]()
     
-    override func viewDidLoad() {
-        let url = NSURL(string: "https://api.parse.com/1/classes/StudentLocation?limit=50")!
-        let request = NSMutableURLRequest(URL: url)
-        request.addValue(OTMClient.Constants.ParseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
-        request.addValue(OTMClient.Constants.ParseApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
-        otmClient.taskForRequest(request, isUdacityAPI: false) {
-            result, error in
-            
-            guard error == nil else {
-                print(error)
-                return
-            }
-            
-            guard let result = result, studentLocationResults = result["results"] as? [[String: AnyObject]] else {
-                return
-            }
-            
-            self.studentLocations = StudentInformation.studentLocationFromResults(studentLocationResults)
-            dispatch_async(dispatch_get_main_queue()) {
-                self.tableView.reloadData()
-            }
-        }
+        tableView.reloadData()
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.studentLocations.count
+        return otmClient.studentList.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let studentInfo = otmClient.studentList[indexPath.row]
+        
         let cell = tableView.dequeueReusableCellWithIdentifier("StudentLocationCell")!
-        cell.textLabel?.text = studentLocations[indexPath.row].firstName + " " + studentLocations[indexPath.row].lastName
+        cell.textLabel?.text = studentInfo.firstName + " " + studentInfo.lastName
         cell.imageView?.image = UIImage(named: "pin")
         return cell
     }

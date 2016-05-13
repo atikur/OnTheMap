@@ -30,14 +30,14 @@ struct StudentInformation {
         longitude = dicationary[OTMClient.StudentLocationKeys.Longitude] as! Float
     }
     
-    static func studentLocationFromResults(results: [[String: AnyObject]]) -> [StudentInformation] {
-        var locations = [StudentInformation]()
+    static func studentInformationFromResults(results: [[String: AnyObject]]) -> [StudentInformation] {
+        var studentList = [StudentInformation]()
         
         for result in results {
-            locations.append(StudentInformation(dicationary: result))
+            studentList.append(StudentInformation(dicationary: result))
         }
         
-        return locations
+        return studentList
     }
     
 }

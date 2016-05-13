@@ -13,11 +13,14 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     
+    let otmClient = OTMClient.sharedInstance()
+    
     var initialLocation: CLLocation!
     let regionRedius: CLLocationDistance = 500
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        getStudentInfo()
         
         mapView.delegate = self
         
@@ -26,6 +29,30 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
         
         let sampleAnnotation = StudentLocation(name: "John Doe", mediaURL: "http://www.example.com", coordinate: CLLocationCoordinate2D(latitude: 37.3230, longitude: -122.0322))
         mapView.addAnnotation(sampleAnnotation)
+    }
+    
+    func getStudentInfo() {
+        let url = NSURL(string: "https://api.parse.com/1/classes/StudentLocation?limit=50")!
+        let request = NSMutableURLRequest(URL: url)
+        request.addValue(OTMClient.Constants.ParseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(OTMClient.Constants.ParseApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        
+        otmClient.taskForRequest(request, isUdacityAPI: false) {
+            result, error in
+            
+            guard error == nil else {
+                print(error)
+                return
+            }
+            
+            guard let result = result, studentInfoResults = result["results"] as? [[String: AnyObject]] else {
+                return
+            }
+            
+            self.otmClient.studentList = StudentInformation.studentInformationFromResults(studentInfoResults)
+            
+            print(self.otmClient.studentList)
+        }
     }
     
     func centerMapOnLocaion(location: CLLocation) {
