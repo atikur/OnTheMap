@@ -12,6 +12,42 @@ class StudentListViewController: UITableViewController {
     
     let otmClient = OTMClient.sharedInstance()
     
+    @IBAction func logoutButtonPressed(sender: UIBarButtonItem) {
+        logout()
+    }
+    
+    @IBAction func pinButtonPressed(sender: UIBarButtonItem) {
+    }
+    
+    func logout() {
+        let request = OTMClient.deleteRequestForUdacityLogout()
+        
+        otmClient.taskForRequest(request, isUdacityAPI: true) {
+            result, error in
+            
+            guard error == nil else {
+                print(error)
+                return
+            }
+            
+            guard let result = result,
+                sessionDict = result["session"] as? [String: AnyObject],
+                sessionID = sessionDict["id"] as? String else {
+                    return
+            }
+            
+            self.otmClient.udacitySessionID = nil
+            self.otmClient.udacityUserID = nil
+            self.otmClient.studentList = []
+            
+            print("logged out successfully!")
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="eH9-ts-d1Z">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -106,7 +106,18 @@
                             <constraint firstAttribute="trailing" secondItem="e84-RT-TLh" secondAttribute="trailing" id="h4m-9P-Vd9"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="On The Map" id="SDH-zy-Gto"/>
+                    <navigationItem key="navigationItem" title="On The Map" id="SDH-zy-Gto">
+                        <barButtonItem key="leftBarButtonItem" systemItem="reply" id="n3F-7Z-vCj">
+                            <connections>
+                                <action selector="logoutButtonPressed:" destination="r7s-7s-oRd" id="pVf-WP-VF1"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="pin" id="suV-ht-AMe">
+                            <connections>
+                                <action selector="pinButtonPressed:" destination="r7s-7s-oRd" id="6d9-09-K6C"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="e84-RT-TLh" id="bZT-G7-IVd"/>
                     </connections>
@@ -138,7 +149,18 @@
                             <outlet property="delegate" destination="12a-eg-hUI" id="rCu-zz-exo"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="On The Map" id="b55-X5-B3b"/>
+                    <navigationItem key="navigationItem" title="On The Map" id="b55-X5-B3b">
+                        <barButtonItem key="leftBarButtonItem" systemItem="reply" id="9Qw-hK-N8l">
+                            <connections>
+                                <action selector="logoutButtonPressed:" destination="12a-eg-hUI" id="YUy-RP-cjg"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="pin" id="SXF-c4-N5n">
+                            <connections>
+                                <action selector="pinButtonPressed:" destination="12a-eg-hUI" id="xuc-LJ-9G7"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f4A-dX-IZA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -204,5 +226,6 @@
     <resources>
         <image name="list" width="22" height="21"/>
         <image name="map" width="22" height="18"/>
+        <image name="pin" width="14" height="20"/>
     </resources>
 </document>
