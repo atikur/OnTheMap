@@ -187,13 +187,67 @@
                                     <action selector="cancelButtonPressed:" destination="o4r-ty-rpb" eventType="touchUpInside" id="8dl-D0-bTr"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Where are you" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hY9-7I-LdI">
+                                <rect key="frame" x="229" y="68" width="142" height="27"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="studying" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bRk-1B-FFY">
+                                <rect key="frame" x="258" y="98" width="85" height="27"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="today?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jov-mT-O1T">
+                                <rect key="frame" x="267" y="128" width="67" height="27"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Enter Your Location Here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="pI8-fh-htp">
+                                <rect key="frame" x="0.0" y="215" width="600" height="128"/>
+                                <color key="backgroundColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="PFN-Ov-QTh"/>
+                                </constraints>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="745-Gi-qg4">
+                                <rect key="frame" x="230" y="386" width="140" height="40"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                <state key="normal" title="Find on the Map">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="findOnMapButtonPressed:" destination="o4r-ty-rpb" eventType="touchUpInside" id="T6Q-Nn-j0F"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="745-Gi-qg4" firstAttribute="centerX" secondItem="PPl-ao-dUY" secondAttribute="centerX" id="69W-e8-rLF"/>
+                            <constraint firstAttribute="trailing" secondItem="pI8-fh-htp" secondAttribute="trailing" id="9fG-N1-lTy"/>
+                            <constraint firstItem="bRk-1B-FFY" firstAttribute="centerX" secondItem="PPl-ao-dUY" secondAttribute="centerX" id="EDV-SZ-ghi"/>
                             <constraint firstItem="dWM-Fw-HQJ" firstAttribute="top" secondItem="n1E-9F-CW8" secondAttribute="bottom" id="KZB-oZ-DRf"/>
+                            <constraint firstItem="pI8-fh-htp" firstAttribute="leading" secondItem="PPl-ao-dUY" secondAttribute="leading" id="QMg-L9-nwe"/>
+                            <constraint firstItem="bRk-1B-FFY" firstAttribute="top" secondItem="hY9-7I-LdI" secondAttribute="bottom" constant="3" id="Rcj-9L-MSX"/>
+                            <constraint firstItem="hY9-7I-LdI" firstAttribute="centerX" secondItem="PPl-ao-dUY" secondAttribute="centerX" id="Sx8-bq-y4D"/>
+                            <constraint firstItem="pI8-fh-htp" firstAttribute="top" secondItem="jov-mT-O1T" secondAttribute="bottom" constant="60" id="VeW-7T-4Z9"/>
                             <constraint firstAttribute="trailingMargin" secondItem="dWM-Fw-HQJ" secondAttribute="trailing" id="VhO-ii-GgF"/>
+                            <constraint firstItem="hY9-7I-LdI" firstAttribute="top" secondItem="n1E-9F-CW8" secondAttribute="bottom" constant="48" id="YyH-zu-KFX"/>
+                            <constraint firstItem="jov-mT-O1T" firstAttribute="centerX" secondItem="PPl-ao-dUY" secondAttribute="centerX" id="auJ-HP-cXW"/>
+                            <constraint firstItem="jov-mT-O1T" firstAttribute="top" secondItem="bRk-1B-FFY" secondAttribute="bottom" constant="3" id="jzN-eL-jpt"/>
+                            <constraint firstItem="745-Gi-qg4" firstAttribute="top" secondItem="pI8-fh-htp" secondAttribute="bottom" constant="43" id="odX-qK-Gc2"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="findOnMapButton" destination="745-Gi-qg4" id="hmx-px-ZlI"/>
+                        <outlet property="locationTextView" destination="pI8-fh-htp" id="DFV-q4-EI0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fnL-3l-QDs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
