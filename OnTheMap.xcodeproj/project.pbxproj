@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		240ACFD81CE5E92C007326B6 /* PostInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 240ACFD71CE5E92C007326B6 /* PostInfoViewController.swift */; };
 		241C0FB01CE4A51E00B9CB38 /* StudentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241C0FAF1CE4A51E00B9CB38 /* StudentLocation.swift */; };
 		24390BD81CE2D47900F45C67 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24390BD71CE2D47900F45C67 /* AppDelegate.swift */; };
 		24390BDA1CE2D47900F45C67 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24390BD91CE2D47900F45C67 /* LoginViewController.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		240ACFD71CE5E92C007326B6 /* PostInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostInfoViewController.swift; sourceTree = "<group>"; };
 		241C0FAF1CE4A51E00B9CB38 /* StudentLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocation.swift; sourceTree = "<group>"; };
 		24390BD41CE2D47900F45C67 /* OnTheMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnTheMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24390BD71CE2D47900F45C67 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 				24390BD91CE2D47900F45C67 /* LoginViewController.swift */,
 				24D8A83F1CE4832F00503165 /* StudentListViewController.swift */,
 				24D8A8411CE48A5E00503165 /* StudentMapViewController.swift */,
+				240ACFD71CE5E92C007326B6 /* PostInfoViewController.swift */,
 				24390BDB1CE2D47900F45C67 /* Main.storyboard */,
 				24390BDE1CE2D47900F45C67 /* Assets.xcassets */,
 				24390BE01CE2D47900F45C67 /* LaunchScreen.storyboard */,
@@ -159,6 +162,7 @@
 				24BC9CB31CE44B7100371CE1 /* OTMConstants.swift in Sources */,
 				24D8A8401CE4832F00503165 /* StudentListViewController.swift in Sources */,
 				241C0FB01CE4A51E00B9CB38 /* StudentLocation.swift in Sources */,
+				240ACFD81CE5E92C007326B6 /* PostInfoViewController.swift in Sources */,
 				24390BD81CE2D47900F45C67 /* AppDelegate.swift in Sources */,
 				24D8A8421CE48A5E00503165 /* StudentMapViewController.swift in Sources */,
 			);
