@@ -8,6 +8,8 @@
 
 import Foundation
 
+public let DidReceiveStudentInfoNotification = "DidReceiveStudentInfoNotification"
+
 class OTMClient: NSObject {
     
     let session = NSURLSession.sharedSession()

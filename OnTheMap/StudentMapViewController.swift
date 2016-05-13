@@ -14,8 +14,7 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     let otmClient = OTMClient.sharedInstance()
-    
-    var initialLocation: CLLocation!
+
     let regionRedius: CLLocationDistance = 500
     
     override func viewDidLoad() {
@@ -24,11 +23,12 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
         
         mapView.delegate = self
         
-        initialLocation = CLLocation(latitude: 37.3230, longitude: -122.0322)
-        centerMapOnLocaion(initialLocation)
-        
-        let sampleAnnotation = StudentLocation(name: "John Doe", mediaURL: "http://www.example.com", coordinate: CLLocationCoordinate2D(latitude: 37.3230, longitude: -122.0322))
-        mapView.addAnnotation(sampleAnnotation)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(StudentMapViewController.studentInfoReceived), name: DidReceiveStudentInfoNotification, object: nil)
+    }
+    
+    func studentInfoReceived() {
+        let studentLocations = otmClient.studentList.map { self.getStudentLocationFromStudentInformation($0) }
+        mapView.addAnnotations(studentLocations)
     }
     
     func getStudentInfo() {
@@ -50,14 +50,23 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
             }
             
             self.otmClient.studentList = StudentInformation.studentInformationFromResults(studentInfoResults)
-            
-            print(self.otmClient.studentList)
+            NSNotificationCenter.defaultCenter().postNotificationName(DidReceiveStudentInfoNotification, object: nil)
         }
     }
+    
+    // MARK: - Helpers
     
     func centerMapOnLocaion(location: CLLocation) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRedius * 2, regionRedius * 2)
         mapView.setRegion(coordinateRegion, animated: true)
+    }
+    
+    func getLocationFromStudentInformation(studentInfo: StudentInformation) -> CLLocation {
+        return CLLocation(latitude: Double(studentInfo.latitude), longitude: Double(studentInfo.longitude))
+    }
+    
+    func getStudentLocationFromStudentInformation(studentInfo: StudentInformation) -> StudentLocation {
+        return StudentLocation(name: studentInfo.firstName + " " + studentInfo.lastName, mediaURL: studentInfo.mediaURL, coordinate: getLocationFromStudentInformation(studentInfo).coordinate)
     }
     
     // MARK: - MKMapViewDelegate Methods
@@ -92,6 +101,10 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
         }
         
         UIApplication.sharedApplication().openURL(url)
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
 }
