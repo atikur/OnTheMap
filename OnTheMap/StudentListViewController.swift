@@ -12,10 +12,22 @@ class StudentListViewController: UITableViewController {
     
     let otmClient = OTMClient.sharedInstance()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(StudentListViewController.studentInfoReceived), name: DidReceiveStudentInfoNotification, object: nil)
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
         tableView.reloadData()
+    }
+    
+    func studentInfoReceived() {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.tableView.reloadData()
+        }
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -31,4 +43,7 @@ class StudentListViewController: UITableViewController {
         return cell
     }
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
 }
