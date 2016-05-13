@@ -1,5 +1,5 @@
 //
-//  OTMStudentLocation.swift
+//  StudentInformation.swift
 //  OnTheMap
 //
 //  Created by Atikur Rahman on 5/12/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct OTMStudentLocation {
+struct StudentInformation {
     
     let objectId: String
     let uniqueKey: String
@@ -30,11 +30,11 @@ struct OTMStudentLocation {
         longitude = dicationary[OTMClient.StudentLocationKeys.Longitude] as! Float
     }
     
-    static func studentLocationFromResults(results: [[String: AnyObject]]) -> [OTMStudentLocation] {
-        var locations = [OTMStudentLocation]()
+    static func studentLocationFromResults(results: [[String: AnyObject]]) -> [StudentInformation] {
+        var locations = [StudentInformation]()
         
         for result in results {
-            locations.append(OTMStudentLocation(dicationary: result))
+            locations.append(StudentInformation(dicationary: result))
         }
         
         return locations

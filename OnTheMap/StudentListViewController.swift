@@ -11,7 +11,7 @@ import UIKit
 class StudentListViewController: UITableViewController {
     
     let otmClient = OTMClient.sharedInstance()
-    var studentLocations = [OTMStudentLocation]()
+    var studentLocations = [StudentInformation]()
     
     override func viewDidLoad() {
         let url = NSURL(string: "https://api.parse.com/1/classes/StudentLocation?limit=50")!
@@ -31,7 +31,7 @@ class StudentListViewController: UITableViewController {
                 return
             }
             
-            self.studentLocations = OTMStudentLocation.studentLocationFromResults(studentLocationResults)
+            self.studentLocations = StudentInformation.studentLocationFromResults(studentLocationResults)
             dispatch_async(dispatch_get_main_queue()) {
                 self.tableView.reloadData()
             }
