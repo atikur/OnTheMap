@@ -24,7 +24,7 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
         initialLocation = CLLocation(latitude: 37.3230, longitude: -122.0322)
         centerMapOnLocaion(initialLocation)
         
-        let sampleAnnotation = StudentLocationAnnotation(name: "John Doe", mediaURL: "http://www.example.com", coordinate: CLLocationCoordinate2D(latitude: 37.3230, longitude: -122.0322))
+        let sampleAnnotation = StudentLocation(name: "John Doe", mediaURL: "http://www.example.com", coordinate: CLLocationCoordinate2D(latitude: 37.3230, longitude: -122.0322))
         mapView.addAnnotation(sampleAnnotation)
     }
     
@@ -36,7 +36,7 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
     // MARK: - MKMapViewDelegate Methods
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        guard let annotation = annotation as? StudentLocationAnnotation else {
+        guard let annotation = annotation as? StudentLocation else {
             return nil
         }
         
@@ -56,7 +56,7 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        guard let annotation = view.annotation as? StudentLocationAnnotation else {
+        guard let annotation = view.annotation as? StudentLocation else {
             return
         }
         

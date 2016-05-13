@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		241C0FB01CE4A51E00B9CB38 /* StudentLocationAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241C0FAF1CE4A51E00B9CB38 /* StudentLocationAnnotation.swift */; };
+		241C0FB01CE4A51E00B9CB38 /* StudentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241C0FAF1CE4A51E00B9CB38 /* StudentLocation.swift */; };
 		24390BD81CE2D47900F45C67 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24390BD71CE2D47900F45C67 /* AppDelegate.swift */; };
 		24390BDA1CE2D47900F45C67 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24390BD91CE2D47900F45C67 /* LoginViewController.swift */; };
 		24390BDD1CE2D47900F45C67 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24390BDB1CE2D47900F45C67 /* Main.storyboard */; };
@@ -21,7 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		241C0FAF1CE4A51E00B9CB38 /* StudentLocationAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocationAnnotation.swift; sourceTree = "<group>"; };
+		241C0FAF1CE4A51E00B9CB38 /* StudentLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocation.swift; sourceTree = "<group>"; };
 		24390BD41CE2D47900F45C67 /* OnTheMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnTheMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24390BD71CE2D47900F45C67 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		24390BD91CE2D47900F45C67 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -70,7 +70,7 @@
 				24F9847E1CE42675000686F9 /* OTMClient.swift */,
 				24BC9CB21CE44B7100371CE1 /* OTMConstants.swift */,
 				24BC9CB41CE44C2200371CE1 /* StudentInformation.swift */,
-				241C0FAF1CE4A51E00B9CB38 /* StudentLocationAnnotation.swift */,
+				241C0FAF1CE4A51E00B9CB38 /* StudentLocation.swift */,
 				24390BD91CE2D47900F45C67 /* LoginViewController.swift */,
 				24D8A83F1CE4832F00503165 /* StudentListViewController.swift */,
 				24D8A8411CE48A5E00503165 /* StudentMapViewController.swift */,
@@ -158,7 +158,7 @@
 				24F9847F1CE42675000686F9 /* OTMClient.swift in Sources */,
 				24BC9CB31CE44B7100371CE1 /* OTMConstants.swift in Sources */,
 				24D8A8401CE4832F00503165 /* StudentListViewController.swift in Sources */,
-				241C0FB01CE4A51E00B9CB38 /* StudentLocationAnnotation.swift in Sources */,
+				241C0FB01CE4A51E00B9CB38 /* StudentLocation.swift in Sources */,
 				24390BD81CE2D47900F45C67 /* AppDelegate.swift in Sources */,
 				24D8A8421CE48A5E00503165 /* StudentMapViewController.swift in Sources */,
 			);

@@ -1,5 +1,5 @@
 //
-//  StudentLocationAnnotation.swift
+//  StudentLocation.swift
 //  OnTheMap
 //
 //  Created by Atikur Rahman on 5/12/16.
@@ -8,7 +8,7 @@
 
 import MapKit
 
-class StudentLocationAnnotation: NSObject, MKAnnotation {
+class StudentLocation: NSObject, MKAnnotation {
     
     let name: String
     let mediaURL: String
