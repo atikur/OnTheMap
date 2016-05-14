@@ -168,6 +168,13 @@ class PostInfoViewController: UIViewController {
             print("Successfully posted: \(objectId)")
             
             dispatch_async(dispatch_get_main_queue()) {
+                
+                if let presenter = ((self.presentingViewController as? UITabBarController)?.selectedViewController as? UINavigationController)?.viewControllers[0] as? StudentMapViewController {
+                    presenter.refreshMapAnnotations()
+                } else {
+                    print("Can't refersh annotations.")
+                }
+                
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
         }

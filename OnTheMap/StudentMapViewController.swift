@@ -104,6 +104,13 @@ class StudentMapViewController: UIViewController {
         }
     }
     
+    func refreshMapAnnotations() {
+        let existingAnnotations = mapView.annotations
+        mapView.removeAnnotations(existingAnnotations)
+        
+        getStudentInfo()
+    }
+    
     // MARK: -
     
     deinit {
