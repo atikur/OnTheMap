@@ -14,8 +14,6 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     let otmClient = OTMClient.sharedInstance()
-
-    let regionRedius: CLLocationDistance = 500
     
     @IBAction func logoutButtonPressed(sender: UIBarButtonItem) {
         logout()
@@ -94,6 +92,7 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
     // MARK: - Helpers
     
     func centerMapOnLocaion(location: CLLocation) {
+        let regionRedius: CLLocationDistance = 500
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRedius * 2, regionRedius * 2)
         mapView.setRegion(coordinateRegion, animated: true)
     }
