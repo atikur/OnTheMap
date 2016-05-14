@@ -156,7 +156,7 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
                 OTMClient.StudentLocationKeys.Longitude: self.locationCoordinate.longitude
             ]
             
-            let studentInfo = StudentInformation(dicationary: studentInfoDict)
+            let studentInfo = StudentInformation(dictionary: studentInfoDict)
             self.postStudentInformation(studentInfo)
         }
     }

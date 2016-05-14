@@ -18,21 +18,21 @@ struct StudentInformation {
     let latitude: Float
     let longitude: Float
     
-    init(dicationary: [String: AnyObject]) {
-        uniqueKey = dicationary[OTMClient.StudentLocationKeys.UniqueKey] as! String
-        firstName = dicationary[OTMClient.StudentLocationKeys.FirstName] as! String
-        lastName = dicationary[OTMClient.StudentLocationKeys.LastName] as! String
-        mapString = dicationary[OTMClient.StudentLocationKeys.MapString] as! String
-        mediaURL = dicationary[OTMClient.StudentLocationKeys.MediaURL] as! String
-        latitude = dicationary[OTMClient.StudentLocationKeys.Latitude] as! Float
-        longitude = dicationary[OTMClient.StudentLocationKeys.Longitude] as! Float
+    init(dictionary: [String: AnyObject]) {
+        uniqueKey = dictionary[OTMClient.StudentLocationKeys.UniqueKey] as! String
+        firstName = dictionary[OTMClient.StudentLocationKeys.FirstName] as! String
+        lastName = dictionary[OTMClient.StudentLocationKeys.LastName] as! String
+        mapString = dictionary[OTMClient.StudentLocationKeys.MapString] as! String
+        mediaURL = dictionary[OTMClient.StudentLocationKeys.MediaURL] as! String
+        latitude = dictionary[OTMClient.StudentLocationKeys.Latitude] as! Float
+        longitude = dictionary[OTMClient.StudentLocationKeys.Longitude] as! Float
     }
     
     static func studentInformationFromResults(results: [[String: AnyObject]]) -> [StudentInformation] {
         var studentList = [StudentInformation]()
         
         for result in results {
-            studentList.append(StudentInformation(dicationary: result))
+            studentList.append(StudentInformation(dictionary: result))
         }
         
         return studentList
