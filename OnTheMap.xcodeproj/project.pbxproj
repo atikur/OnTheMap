@@ -71,21 +71,37 @@
 			isa = PBXGroup;
 			children = (
 				24390BD71CE2D47900F45C67 /* AppDelegate.swift */,
-				24F9847E1CE42675000686F9 /* OTMClient.swift */,
-				24BC9CB21CE44B7100371CE1 /* OTMConstants.swift */,
-				24A426F41CE728C2003FF2D6 /* OTMHelpers.swift */,
-				24BC9CB41CE44C2200371CE1 /* StudentInformation.swift */,
-				241C0FAF1CE4A51E00B9CB38 /* StudentAnnotation.swift */,
-				24390BD91CE2D47900F45C67 /* LoginViewController.swift */,
-				24D8A83F1CE4832F00503165 /* StudentListViewController.swift */,
-				24D8A8411CE48A5E00503165 /* StudentMapViewController.swift */,
-				240ACFD71CE5E92C007326B6 /* PostInfoViewController.swift */,
+				24A426F71CE730A0003FF2D6 /* Models */,
+				24A426F61CE7308D003FF2D6 /* ViewControllers */,
 				24390BDB1CE2D47900F45C67 /* Main.storyboard */,
 				24390BDE1CE2D47900F45C67 /* Assets.xcassets */,
 				24390BE01CE2D47900F45C67 /* LaunchScreen.storyboard */,
 				24390BE31CE2D47900F45C67 /* Info.plist */,
 			);
 			path = OnTheMap;
+			sourceTree = "<group>";
+		};
+		24A426F61CE7308D003FF2D6 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				24390BD91CE2D47900F45C67 /* LoginViewController.swift */,
+				24D8A83F1CE4832F00503165 /* StudentListViewController.swift */,
+				24D8A8411CE48A5E00503165 /* StudentMapViewController.swift */,
+				240ACFD71CE5E92C007326B6 /* PostInfoViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		24A426F71CE730A0003FF2D6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				24F9847E1CE42675000686F9 /* OTMClient.swift */,
+				24BC9CB21CE44B7100371CE1 /* OTMConstants.swift */,
+				24A426F41CE728C2003FF2D6 /* OTMHelpers.swift */,
+				24BC9CB41CE44C2200371CE1 /* StudentInformation.swift */,
+				241C0FAF1CE4A51E00B9CB38 /* StudentAnnotation.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

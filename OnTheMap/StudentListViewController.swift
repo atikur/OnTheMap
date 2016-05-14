@@ -10,14 +10,37 @@ import UIKit
 
 class StudentListViewController: UITableViewController {
     
+    // MARK: - Properties
+    
     let otmClient = OTMClient.sharedInstance()
+    
+    // MARK: - Actions
     
     @IBAction func logoutButtonPressed(sender: UIBarButtonItem) {
         logout()
     }
     
-    @IBAction func pinButtonPressed(sender: UIBarButtonItem) {
+    // MARK: -
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(StudentListViewController.studentInfoReceived), name: DidReceiveStudentInfoNotification, object: nil)
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tableView.reloadData()
+    }
+    
+    func studentInfoReceived() {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.tableView.reloadData()
+        }
+    }
+    
+    // MARK: -
     
     func logout() {
         let request = OTMClient.deleteRequestForUdacityLogout()
@@ -40,31 +63,15 @@ class StudentListViewController: UITableViewController {
             self.otmClient.udacityUserID = nil
             self.otmClient.studentList = []
             
-            print("logged out successfully!")
+            print("logged out successfully: \(sessionID)")
             
             dispatch_async(dispatch_get_main_queue()) {
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
         }
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(StudentListViewController.studentInfoReceived), name: DidReceiveStudentInfoNotification, object: nil)
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        tableView.reloadData()
-    }
-    
-    func studentInfoReceived() {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.tableView.reloadData()
-        }
-    }
+
+    // MARK: -
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return otmClient.studentList.count
@@ -78,6 +85,16 @@ class StudentListViewController: UITableViewController {
         cell.imageView?.image = UIImage(named: "pin")
         return cell
     }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let studentInfo = otmClient.studentList[indexPath.row]
+        
+        if let url = NSURL(string: studentInfo.mediaURL) {
+            UIApplication.sharedApplication().openURL(url)
+        }
+    }
+    
+    // MARK: -
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)

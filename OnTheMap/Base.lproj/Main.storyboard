@@ -148,7 +148,6 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="pin" id="SXF-c4-N5n">
                             <connections>
-                                <action selector="pinButtonPressed:" destination="12a-eg-hUI" id="xuc-LJ-9G7"/>
                                 <segue destination="o4r-ty-rpb" kind="presentation" id="dsR-zc-Fr0"/>
                             </connections>
                         </barButtonItem>
