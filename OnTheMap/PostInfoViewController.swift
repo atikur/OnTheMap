@@ -293,6 +293,13 @@ class PostInfoViewController: UIViewController {
             activityIndicator.stopAnimating()
         }
     }
+    
+    // MARK: -
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        locationTextView.resignFirstResponder()
+        linkTextView.resignFirstResponder()
+    }
 }
 
 extension PostInfoViewController: UITextViewDelegate {
