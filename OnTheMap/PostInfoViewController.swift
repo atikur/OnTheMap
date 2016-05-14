@@ -31,7 +31,7 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
     }
     @IBAction func findOnMapButtonPressed(sender: UIButton) {
         guard let address = locationTextView.text where !address.isEmpty && address != locationTextViewPlaceholderText else {
-            showAlert("Location Empty", message: "Please enter a location.")
+            OTMClient.showAlert(self, title: "Location Empty", message: "Please enter a location.")
             return
         }
         
@@ -66,16 +66,11 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    func showAlert(title: String, message: String) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let okayAction = UIAlertAction(title: "Okay", style: .Default, handler: nil)
-        alertController.addAction(okayAction)
-        presentViewController(alertController, animated: true, completion: nil)
-    }
-    
     func showGeocodingError(title: String, message: String) {
-        showAlert(title, message: message)
-        showActivityIndicator(false)
+        dispatch_async(dispatch_get_main_queue()) {
+            OTMClient.showAlert(self, title: title, message: message)
+            self.showActivityIndicator(false)
+        }
     }
     
     func getAnnotationForPlacemark(placemark: CLPlacemark) -> MKPointAnnotation? {
@@ -130,7 +125,7 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
     
     @IBAction func submitButtonPressed(sender: UIButton) {
         guard let mediaUrl = linkTextView.text where !mediaUrl.isEmpty && mediaUrl != linkTextViewPlaceholderText else {
-            showAlert("No Media URL", message: "Please enter media URL.")
+            OTMClient.showAlert(self, title: "No Media URL", message: "Please enter media URL.")
             return
         }
         
