@@ -186,7 +186,7 @@ class PostInfoViewController: UIViewController {
             return
         }
         
-        let request = OTMClient.requestForUdacityProfileData(userId)
+        let request = OTMClient.requestForUdacityProfileDataRetrieval(userId)
         
         otmClient.taskForRequest(request, isUdacityAPI: true) {
             result, error in

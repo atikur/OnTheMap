@@ -34,7 +34,7 @@ class LoginViewController: UIViewController {
     // MARK: -
     
     func loginWithEmail(email: String, password: String) {
-        let request = OTMClient.postRequestForUdacityLogin(email, password: password)
+        let request = OTMClient.requestForUdacityLogin(email, password: password)
         
         otmClient.taskForRequest(request, isUdacityAPI: true) {
             result, error in

@@ -6,6 +6,8 @@
 //  Copyright © 2016 Atikur Rahman. All rights reserved.
 //
 
+public let DidReceiveStudentInfoNotification = "DidReceiveStudentInfoNotification"
+
 extension OTMClient {
     
     struct Constants {

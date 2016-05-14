@@ -46,7 +46,7 @@ class StudentMapViewController: UIViewController {
     // MARK: -
     
     func logout() {
-        let request = OTMClient.deleteRequestForUdacityLogout()
+        let request = OTMClient.requestForUdacityLogout()
         
         otmClient.taskForRequest(request, isUdacityAPI: true) {
             result, error in

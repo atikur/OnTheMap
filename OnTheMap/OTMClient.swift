@@ -8,16 +8,17 @@
 
 import Foundation
 
-public let DidReceiveStudentInfoNotification = "DidReceiveStudentInfoNotification"
-
 class OTMClient: NSObject {
     
-    let session = NSURLSession.sharedSession()
+    // MARK: - Properteis
     
+    let session = NSURLSession.sharedSession()
     var studentList = [StudentInformation]()
 
     var udacitySessionID: String?
     var udacityUserID: String?
+    
+    // MARK: - 
     
     func taskForRequest(request: NSURLRequest, isUdacityAPI: Bool, completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
         let task = session.dataTaskWithRequest(request) {
@@ -62,9 +63,9 @@ class OTMClient: NSObject {
         }
     }
     
-    // MARK: - Class Methods
+    // MARK: - NSURLRequests
     
-    class func requestForUdacityProfileData(userId: String) -> NSURLRequest {
+    class func requestForUdacityProfileDataRetrieval(userId: String) -> NSURLRequest {
         return NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/users/\(userId)")!)
     }
     
@@ -91,7 +92,7 @@ class OTMClient: NSObject {
         return request
     }
     
-    class func postRequestForUdacityLogin(username: String, password: String) -> NSURLRequest {
+    class func requestForUdacityLogin(username: String, password: String) -> NSURLRequest {
         let url = NSURL(string: "https://www.udacity.com/api/session")!
         let requestBody = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}".dataUsingEncoding(NSUTF8StringEncoding)
         
@@ -106,7 +107,7 @@ class OTMClient: NSObject {
         return request
     }
     
-    class func deleteRequestForUdacityLogout() -> NSURLRequest {
+    class func requestForUdacityLogout() -> NSURLRequest {
         let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/session")!)
         request.HTTPMethod = "DELETE"
         var xsrfCookie: NSHTTPCookie? = nil
