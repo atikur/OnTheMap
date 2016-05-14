@@ -104,7 +104,6 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="pin" id="suV-ht-AMe">
                             <connections>
-                                <action selector="pinButtonPressed:" destination="r7s-7s-oRd" id="6d9-09-K6C"/>
                                 <segue destination="o4r-ty-rpb" kind="presentation" id="aRs-fc-kJz"/>
                             </connections>
                         </barButtonItem>

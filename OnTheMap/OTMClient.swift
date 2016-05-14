@@ -64,6 +64,15 @@ class OTMClient: NSObject {
     
     // MARK: - Class Methods
     
+    class func requestForStudentInfoRetrieval() -> NSURLRequest {
+        let url = NSURL(string: "https://api.parse.com/1/classes/StudentLocation?limit=100&order=-updatedAt")!
+        let request = NSMutableURLRequest(URL: url)
+        request.addValue(OTMClient.Constants.ParseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(OTMClient.Constants.ParseApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        
+        return request
+    }
+    
     class func postRequestForUdacityLogin(username: String, password: String) -> NSURLRequest {
         let url = NSURL(string: "https://www.udacity.com/api/session")!
         let requestBody = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}".dataUsingEncoding(NSUTF8StringEncoding)

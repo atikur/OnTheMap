@@ -9,48 +9,21 @@
 import UIKit
 import MapKit
 
-class StudentMapViewController: UIViewController, MKMapViewDelegate {
+class StudentMapViewController: UIViewController {
+    
+    // MARK: - Properties
     
     @IBOutlet weak var mapView: MKMapView!
     
     let otmClient = OTMClient.sharedInstance()
     
+    // MARK: - Actions
+    
     @IBAction func logoutButtonPressed(sender: UIBarButtonItem) {
         logout()
     }
     
-    @IBAction func pinButtonPressed(sender: UIBarButtonItem) {
-        
-    }
-    
-    func logout() {
-        let request = OTMClient.deleteRequestForUdacityLogout()
-        
-        otmClient.taskForRequest(request, isUdacityAPI: true) {
-            result, error in
-            
-            guard error == nil else {
-                print(error)
-                return
-            }
-            
-            guard let result = result,
-                sessionDict = result["session"] as? [String: AnyObject],
-                sessionID = sessionDict["id"] as? String else {
-                    return
-            }
-            
-            self.otmClient.udacitySessionID = nil
-            self.otmClient.udacityUserID = nil
-            self.otmClient.studentList = []
-            
-            print("logged out successfully!")
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
-        }
-    }
+    // MARK: -
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,21 +39,57 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
         mapView.addAnnotations(studentLocations)
     }
     
+    func getStudentAnnotation(studentInfo: StudentInformation) -> StudentAnnotation {
+        return StudentAnnotation(name: studentInfo.firstName + " " + studentInfo.lastName, mediaURL: studentInfo.mediaURL, coordinate: studentInfo.location.coordinate)
+    }
+    
+    // MARK: -
+    
+    func logout() {
+        let request = OTMClient.deleteRequestForUdacityLogout()
+        
+        otmClient.taskForRequest(request, isUdacityAPI: true) {
+            result, error in
+            
+            guard error == nil else {
+                print(error)
+                self.displayError("Logout Failed", message: "An error occurred. Try again later.")
+                return
+            }
+            
+            guard let result = result,
+                sessionDict = result["session"] as? [String: AnyObject],
+                sessionID = sessionDict["id"] as? String else {
+                    self.displayError("Logout Failed", message: "An error occurred. Try again later.")
+                    return
+            }
+            
+            self.otmClient.udacitySessionID = nil
+            self.otmClient.udacityUserID = nil
+            self.otmClient.studentList = []
+            
+            print("logged out successfully: \(sessionID)")
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+    }
+    
     func getStudentInfo() {
-        let url = NSURL(string: "https://api.parse.com/1/classes/StudentLocation?limit=50")!
-        let request = NSMutableURLRequest(URL: url)
-        request.addValue(OTMClient.Constants.ParseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
-        request.addValue(OTMClient.Constants.ParseApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        let request = OTMClient.requestForStudentInfoRetrieval()
         
         otmClient.taskForRequest(request, isUdacityAPI: false) {
             result, error in
             
             guard error == nil else {
                 print(error)
+                self.displayError("Error", message: "Can't get student information.")
                 return
             }
             
             guard let result = result, studentInfoResults = result["results"] as? [[String: AnyObject]] else {
+                self.displayError("Error", message: "Can't get student information.")
                 return
             }
             
@@ -89,19 +98,21 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    // MARK: - Helpers
-    
-    func centerMapOnLocaion(location: CLLocation) {
-        let regionRedius: CLLocationDistance = 500
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRedius * 2, regionRedius * 2)
-        mapView.setRegion(coordinateRegion, animated: true)
+    func displayError(title: String, message: String) {
+        dispatch_async(dispatch_get_main_queue()) {
+            OTMClient.showAlert(self, title: title, message: message)
+        }
     }
     
-    func getStudentAnnotation(studentInfo: StudentInformation) -> StudentAnnotation {
-        return StudentAnnotation(name: studentInfo.firstName + " " + studentInfo.lastName, mediaURL: studentInfo.mediaURL, coordinate: studentInfo.location.coordinate)
+    // MARK: -
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
-    // MARK: - MKMapViewDelegate Methods
+}
+
+extension StudentMapViewController: MKMapViewDelegate {
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         guard let annotation = annotation as? StudentAnnotation else {
@@ -134,9 +145,5 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
         
         UIApplication.sharedApplication().openURL(url)
     }
-    
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-    
 }
+
