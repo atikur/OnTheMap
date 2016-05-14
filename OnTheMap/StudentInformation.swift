@@ -10,7 +10,6 @@ import Foundation
 
 struct StudentInformation {
     
-    let objectId: String
     let uniqueKey: String
     let firstName: String
     let lastName: String
@@ -20,7 +19,6 @@ struct StudentInformation {
     let longitude: Float
     
     init(dicationary: [String: AnyObject]) {
-        objectId = dicationary[OTMClient.StudentLocationKeys.ObjectId] as! String
         uniqueKey = dicationary[OTMClient.StudentLocationKeys.UniqueKey] as! String
         firstName = dicationary[OTMClient.StudentLocationKeys.FirstName] as! String
         lastName = dicationary[OTMClient.StudentLocationKeys.LastName] as! String

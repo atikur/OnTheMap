@@ -23,6 +23,9 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    var locationString: String!
+    var locationCoordinate: CLLocationCoordinate2D!
+    
     @IBAction func cancelButtonPressed(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
     }
@@ -57,6 +60,9 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
             self.mapView.addAnnotation(annotation)
             self.configureUI(showMap: true)
             self.showActivityIndicator(false)
+            
+            self.locationString = address
+            self.locationCoordinate = placemarks[0].location!.coordinate
         }
     }
     
@@ -123,6 +129,11 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func submitButtonPressed(sender: UIButton) {
+        guard let mediaUrl = linkTextView.text where !mediaUrl.isEmpty && mediaUrl != linkTextViewPlaceholderText else {
+            showAlert("No Media URL", message: "Please enter media URL.")
+            return
+        }
+        
         getUdacityProfileData {
             profileData, error in
             guard error == nil else {
@@ -134,8 +145,46 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
                 print("no profile data found")
                 return
             }
+                        
+            let studentInfoDict: [String : AnyObject] = [
+                OTMClient.StudentLocationKeys.UniqueKey: self.otmClient.udacityUserID!,
+                OTMClient.StudentLocationKeys.FirstName: profileData.firstName,
+                OTMClient.StudentLocationKeys.LastName: profileData.lastName,
+                OTMClient.StudentLocationKeys.MapString: self.locationString,
+                OTMClient.StudentLocationKeys.MediaURL: mediaUrl,
+                OTMClient.StudentLocationKeys.Latitude: self.locationCoordinate.latitude,
+                OTMClient.StudentLocationKeys.Longitude: self.locationCoordinate.longitude
+            ]
             
-            print(profileData)
+            let studentInfo = StudentInformation(dicationary: studentInfoDict)
+            self.postStudentInformation(studentInfo)
+        }
+    }
+    
+    func postStudentInformation(studentInfo: StudentInformation) {
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation")!)
+        request.HTTPMethod = "POST"
+        request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.HTTPBody = "{\"uniqueKey\": \"\(studentInfo.uniqueKey)\", \"firstName\": \"\(studentInfo.firstName)\", \"lastName\": \"\(studentInfo.lastName)\",\"mapString\": \"\(studentInfo.mapString)\", \"mediaURL\": \"\(studentInfo.mediaURL)\",\"latitude\": \(studentInfo.latitude), \"longitude\": \(studentInfo.longitude)}".dataUsingEncoding(NSUTF8StringEncoding)
+        
+        otmClient.taskForRequest(request, isUdacityAPI: false) {
+            result, error in
+            guard error == nil else {
+                print(error)
+                return
+            }
+            
+            guard let result = result else {
+                return
+            }
+            
+            guard let objectId = result["objectId"] else {
+                return
+            }
+            
+            print("Successfully posted: \(objectId)")
         }
     }
     
