@@ -53,14 +53,17 @@ class LoginViewController: UIViewController {
             }
             
             guard let result = result,
+                accountDict = result["account"] as? [String: AnyObject],
                 sessionDict = result["session"] as? [String: AnyObject],
+                userID = accountDict["key"] as? String,
                 sessionID = sessionDict["id"] as? String else {
                     
                     self.updateInfoLabel("Login failed. Try again later.")
                     return
             }
-            
+                        
             self.otmClient.udacitySessionID = sessionID
+            self.otmClient.udacityUserID = userID
             
             dispatch_async(dispatch_get_main_queue()) {
                 self.performSegueWithIdentifier("UserLoggedIn", sender: nil)

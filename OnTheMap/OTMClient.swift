@@ -17,7 +17,7 @@ class OTMClient: NSObject {
     var studentList = [StudentInformation]()
 
     var udacitySessionID: String?
-    var udacityUserID: Int?
+    var udacityUserID: String?
     
     func taskForRequest(request: NSURLRequest, isUdacityAPI: Bool, completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
         let task = session.dataTaskWithRequest(request) {
