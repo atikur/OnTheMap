@@ -9,12 +9,16 @@
 import UIKit
 
 class LoginViewController: UIViewController {
+    
+    // MARK: - Properties
 
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var infoLabel: UILabel!
     
     let otmClient = OTMClient.sharedInstance()
+    
+    // MARK: - Actions
     
     @IBAction func loginButtonPressed(sender: UIButton) {
         guard let email = emailTextField.text, password = passwordTextField.text where !email.isEmpty && !password.isEmpty else {
@@ -25,11 +29,15 @@ class LoginViewController: UIViewController {
         loginWithEmail(email, password: password)
     }
     
+    // MARK: - Lifecyle Methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         infoLabel.text = ""
     }
+    
+    // MARK: -
     
     func updateInfoLabel(message: String) {
         dispatch_async(dispatch_get_main_queue()) {
@@ -38,10 +46,7 @@ class LoginViewController: UIViewController {
     }
     
     func loginWithEmail(email: String, password: String) {
-        let url = NSURL(string: "https://www.udacity.com/api/session")!
-        let requestBody = "{\"udacity\": {\"username\": \"\(email)\", \"password\": \"\(password)\"}}".dataUsingEncoding(NSUTF8StringEncoding)
-        
-        let request = OTMClient.postRequestWithURL(url, requestBody: requestBody)
+        let request = OTMClient.postRequestForUdacityLogin(email, password: password)
         
         otmClient.taskForRequest(request, isUdacityAPI: true) {
             result, error in

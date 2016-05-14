@@ -64,10 +64,13 @@ class OTMClient: NSObject {
     
     // MARK: - Class Methods
     
-    class func postRequestWithURL(url: NSURL, requestBody: NSData?) -> NSURLRequest {
-        let request = NSMutableURLRequest(URL: url)
+    class func postRequestForUdacityLogin(username: String, password: String) -> NSURLRequest {
+        let url = NSURL(string: "https://www.udacity.com/api/session")!
+        let requestBody = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}".dataUsingEncoding(NSUTF8StringEncoding)
         
+        let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "POST"
+        
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
