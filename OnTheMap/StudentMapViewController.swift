@@ -62,7 +62,7 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func studentInfoReceived() {
-        let studentLocations = otmClient.studentList.map { self.getStudentLocationFromStudentInformation($0) }
+        let studentLocations = otmClient.studentList.map { self.getStudentAnnotation($0) }
         mapView.addAnnotations(studentLocations)
     }
     
@@ -97,12 +97,8 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
         mapView.setRegion(coordinateRegion, animated: true)
     }
     
-    func getLocationFromStudentInformation(studentInfo: StudentInformation) -> CLLocation {
-        return CLLocation(latitude: Double(studentInfo.latitude), longitude: Double(studentInfo.longitude))
-    }
-    
-    func getStudentLocationFromStudentInformation(studentInfo: StudentInformation) -> StudentAnnotation {
-        return StudentAnnotation(name: studentInfo.firstName + " " + studentInfo.lastName, mediaURL: studentInfo.mediaURL, coordinate: getLocationFromStudentInformation(studentInfo).coordinate)
+    func getStudentAnnotation(studentInfo: StudentInformation) -> StudentAnnotation {
+        return StudentAnnotation(name: studentInfo.firstName + " " + studentInfo.lastName, mediaURL: studentInfo.mediaURL, coordinate: studentInfo.location.coordinate)
     }
     
     // MARK: - MKMapViewDelegate Methods

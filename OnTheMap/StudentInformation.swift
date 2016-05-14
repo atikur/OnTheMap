@@ -6,7 +6,7 @@
 //  Copyright © 2016 Atikur Rahman. All rights reserved.
 //
 
-import Foundation
+import MapKit
 
 struct StudentInformation {
     
@@ -17,6 +17,10 @@ struct StudentInformation {
     let mediaURL: String
     let latitude: Float
     let longitude: Float
+    
+    var location: CLLocation {
+        return CLLocation(latitude: Double(latitude), longitude: Double(longitude))
+    }
     
     init(dictionary: [String: AnyObject]) {
         uniqueKey = dictionary[OTMClient.StudentLocationKeys.UniqueKey] as! String
