@@ -20,21 +20,18 @@ class LoginViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func loginButtonPressed(sender: UIButton) {
-        guard let email = emailTextField.text, password = passwordTextField.text where !email.isEmpty && !password.isEmpty else {
-            OTMClient.showAlert(self, title: "Error", message: "Email/password field empty.")
-            return
+        guard let email = emailTextField.text,
+            password = passwordTextField.text
+            where !email.isEmpty && !password.isEmpty else {
+                
+                OTMClient.showAlert(self, title: "Error", message: "Email/password field empty.")
+                return
         }
         
         loginWithEmail(email, password: password)
     }
     
     // MARK: -
-    
-    func showLoginError(message: String) {
-        dispatch_async(dispatch_get_main_queue()) {
-            OTMClient.showAlert(self, title: "Login Failed", message: message)
-        }
-    }
     
     func loginWithEmail(email: String, password: String) {
         let request = OTMClient.postRequestForUdacityLogin(email, password: password)
@@ -64,6 +61,12 @@ class LoginViewController: UIViewController {
             dispatch_async(dispatch_get_main_queue()) {
                 self.performSegueWithIdentifier("UserLoggedIn", sender: nil)
             }
+        }
+    }
+    
+    func showLoginError(message: String) {
+        dispatch_async(dispatch_get_main_queue()) {
+            OTMClient.showAlert(self, title: "Login Failed", message: message)
         }
     }
 }
