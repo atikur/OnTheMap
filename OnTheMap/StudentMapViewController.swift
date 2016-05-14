@@ -35,8 +35,12 @@ class StudentMapViewController: UIViewController {
     }
     
     func studentInfoReceived() {
-        let studentLocations = otmClient.studentList.map { self.getStudentAnnotation($0) }
-        mapView.addAnnotations(studentLocations)
+        dispatch_async(dispatch_get_main_queue()) {
+            let studentLocations = self.otmClient.studentList.map { self.getStudentAnnotation($0) }
+            self.mapView.addAnnotations(studentLocations)
+            
+            self.mapView.showAnnotations([studentLocations[0]], animated: true)
+        }
     }
     
     func getStudentAnnotation(studentInfo: StudentInformation) -> StudentAnnotation {
