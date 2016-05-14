@@ -169,10 +169,12 @@ class PostInfoViewController: UIViewController {
             
             dispatch_async(dispatch_get_main_queue()) {
                 
-                if let presenter = ((self.presentingViewController as? UITabBarController)?.selectedViewController as? UINavigationController)?.viewControllers[0] as? StudentMapViewController {
-                    presenter.refreshMapAnnotations()
-                } else {
-                    print("Can't refersh annotations.")
+                if let navController = (self.presentingViewController as? UITabBarController)?.selectedViewController as? UINavigationController {
+                    if let presenter = navController.viewControllers[0] as? StudentMapViewController {
+                        presenter.refreshMapAnnotations()
+                    } else if let presenter = navController.viewControllers[0] as? StudentListViewController {
+                        presenter.getStudentInfo()
+                    }
                 }
                 
                 self.dismissViewControllerAnimated(true, completion: nil)

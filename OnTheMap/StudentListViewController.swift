@@ -70,6 +70,34 @@ class StudentListViewController: UITableViewController {
             }
         }
     }
+    
+    func getStudentInfo() {
+        let request = OTMClient.requestForStudentInfoRetrieval()
+        
+        otmClient.taskForRequest(request, isUdacityAPI: false) {
+            result, error in
+            
+            guard error == nil else {
+                print(error)
+                self.displayError("Error", message: "Can't get student information.")
+                return
+            }
+            
+            guard let result = result, studentInfoResults = result["results"] as? [[String: AnyObject]] else {
+                self.displayError("Error", message: "Can't get student information.")
+                return
+            }
+            
+            self.otmClient.studentList = StudentInformation.studentInformationFromResults(studentInfoResults)
+            NSNotificationCenter.defaultCenter().postNotificationName(DidReceiveStudentInfoNotification, object: nil)
+        }
+    }
+    
+    func displayError(title: String, message: String) {
+        dispatch_async(dispatch_get_main_queue()) {
+            OTMClient.showAlert(self, title: title, message: message)
+        }
+    }
 
     // MARK: -
     
