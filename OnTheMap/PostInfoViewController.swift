@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 
 class PostInfoViewController: UIViewController, UITextViewDelegate {
     
@@ -19,6 +20,25 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
         dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func findOnMapButtonPressed(sender: UIButton) {
+        guard let address = locationTextView.text else {
+            return
+        }
+        
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(address) {
+            placemarks, error in
+            
+            guard error == nil else {
+                print(error)
+                return
+            }
+            
+            guard let placemarks = placemarks where !placemarks.isEmpty else {
+                return
+            }
+            
+            print(placemarks[0])
+        }
     }
     
     override func viewDidLoad() {
