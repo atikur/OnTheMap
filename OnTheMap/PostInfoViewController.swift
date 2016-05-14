@@ -19,38 +19,55 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var findOnMapButton: UIButton!
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     @IBAction func cancelButtonPressed(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func findOnMapButtonPressed(sender: UIButton) {
-        guard let address = locationTextView.text else {
+        guard let address = locationTextView.text where !address.isEmpty && address != locationTextViewPlaceholderText else {
+            showAlert("Location Empty", message: "Please enter a location.")
             return
         }
+        
+        showActivityIndicator(true)
         
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(address) {
             placemarks, error in
             
             guard error == nil else {
-                print(error)
+                self.showGeocodingError("Geocoding Failed", message: "An error occured. Please try again.")
                 return
             }
             
             guard let placemarks = placemarks where !placemarks.isEmpty else {
-                print("no placemark found!")
+                self.showGeocodingError("Geocoding Failed", message: "Can't perform geocoding. Please try some other location.")
                 return
             }
             
             guard let annotation = self.getAnnotationForPlacemark(placemarks[0]) else {
-                print("can't get annotation for placemark")
+                self.showGeocodingError("Geocoding Failed", message: "Can't perform geocoding. Please try some other location.")
                 return
             }
             
             self.centerMapOnLocaion(placemarks[0].location!)
             self.mapView.addAnnotation(annotation)
             self.configureUI(showMap: true)
+            self.showActivityIndicator(false)
         }
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let okayAction = UIAlertAction(title: "Okay", style: .Default, handler: nil)
+        alertController.addAction(okayAction)
+        presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func showGeocodingError(title: String, message: String) {
+        showAlert(title, message: message)
+        showActivityIndicator(false)
     }
     
     func getAnnotationForPlacemark(placemark: CLPlacemark) -> MKPointAnnotation? {
@@ -114,6 +131,7 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
         locationTextView.text = locationTextViewPlaceholderText
         linkTextView.text = linkTextViewPlaceholderText
         findOnMapButton.layer.cornerRadius = 10
+        activityIndicator.hidden = true
         
         configureUI(showMap: false)
     }
@@ -122,6 +140,16 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
         linkTextView.hidden = !showMap
         mapView.hidden = !showMap
         submitButton.hidden = !showMap
+    }
+    
+    func showActivityIndicator(show: Bool) {
+        activityIndicator.hidden = !show
+        
+        if show {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+        }
     }
     
     func textViewDidBeginEditing(textView: UITextView) {
