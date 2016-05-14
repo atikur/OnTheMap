@@ -175,14 +175,14 @@ class PostInfoViewController: UIViewController {
     
     func getUdacityProfileData(completionHandler: (profileData: (firstName: String, lastName: String)?, error: NSError?) -> Void) {
         
-        func getErrorWithMessage(message: String) -> NSError {
+        func sendError(message: String) -> NSError {
             let userInfo = [NSLocalizedDescriptionKey: message]
             let error = NSError(domain: "getUdacityProfileData", code: 1, userInfo: userInfo)
             return error
         }
         
         guard let userId = otmClient.udacityUserID else {
-            completionHandler(profileData: nil, error: getErrorWithMessage("User id not found"))
+            completionHandler(profileData: nil, error: sendError("User id not found"))
             return
         }
         
@@ -200,7 +200,7 @@ class PostInfoViewController: UIViewController {
                 firstName = userDict["first_name"] as? String,
                 lastName = userDict["last_name"] as? String else {
 
-                    completionHandler(profileData: nil, error: getErrorWithMessage("Can't parse profile information"))
+                    completionHandler(profileData: nil, error: sendError("Can't parse profile information"))
                     return
             }
             
