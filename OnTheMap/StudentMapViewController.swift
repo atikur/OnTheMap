@@ -101,14 +101,14 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
         return CLLocation(latitude: Double(studentInfo.latitude), longitude: Double(studentInfo.longitude))
     }
     
-    func getStudentLocationFromStudentInformation(studentInfo: StudentInformation) -> StudentLocation {
-        return StudentLocation(name: studentInfo.firstName + " " + studentInfo.lastName, mediaURL: studentInfo.mediaURL, coordinate: getLocationFromStudentInformation(studentInfo).coordinate)
+    func getStudentLocationFromStudentInformation(studentInfo: StudentInformation) -> StudentAnnotation {
+        return StudentAnnotation(name: studentInfo.firstName + " " + studentInfo.lastName, mediaURL: studentInfo.mediaURL, coordinate: getLocationFromStudentInformation(studentInfo).coordinate)
     }
     
     // MARK: - MKMapViewDelegate Methods
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        guard let annotation = annotation as? StudentLocation else {
+        guard let annotation = annotation as? StudentAnnotation else {
             return nil
         }
         
@@ -128,7 +128,7 @@ class StudentMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        guard let annotation = view.annotation as? StudentLocation else {
+        guard let annotation = view.annotation as? StudentAnnotation else {
             return
         }
         
