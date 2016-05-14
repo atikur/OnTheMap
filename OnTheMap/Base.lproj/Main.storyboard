@@ -36,12 +36,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incorrect email/password!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMJ-JR-2k1">
-                                <rect key="frame" x="20" y="350" width="560" height="20"/>
-                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4M8-eg-Qy7">
                                 <rect key="frame" x="20" y="277" width="560" height="30"/>
                                 <color key="backgroundColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -56,13 +50,10 @@
                         <color key="backgroundColor" red="0.0" green="0.85141788399999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="leadingMargin" secondItem="4M8-eg-Qy7" secondAttribute="leading" id="H9h-u2-baC"/>
-                            <constraint firstItem="CMJ-JR-2k1" firstAttribute="top" secondItem="4M8-eg-Qy7" secondAttribute="bottom" constant="43" id="K8X-Wc-dEG"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="CMJ-JR-2k1" secondAttribute="leading" id="MXd-Zp-c7c"/>
                             <constraint firstAttribute="trailingMargin" secondItem="pkq-UL-mMy" secondAttribute="trailing" id="NLZ-S9-Aox"/>
                             <constraint firstItem="pkq-UL-mMy" firstAttribute="top" secondItem="0i0-3b-6Vb" secondAttribute="bottom" constant="8" id="QgX-jf-aRK"/>
                             <constraint firstItem="0i0-3b-6Vb" firstAttribute="top" secondItem="hNe-y2-Zgg" secondAttribute="bottom" constant="32" id="Rph-Hl-aSg"/>
                             <constraint firstAttribute="leadingMargin" secondItem="0i0-3b-6Vb" secondAttribute="leading" id="WtK-IU-XZ9"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="CMJ-JR-2k1" secondAttribute="trailing" id="Yqa-ub-kvi"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4M8-eg-Qy7" secondAttribute="trailing" id="cr4-zI-mUO"/>
                             <constraint firstItem="hNe-y2-Zgg" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="128" id="fVo-kZ-nph"/>
                             <constraint firstItem="4M8-eg-Qy7" firstAttribute="top" secondItem="pkq-UL-mMy" secondAttribute="bottom" constant="8" id="jjG-fo-Tv6"/>
@@ -73,7 +64,6 @@
                     </view>
                     <connections>
                         <outlet property="emailTextField" destination="0i0-3b-6Vb" id="FLM-CN-oF9"/>
-                        <outlet property="infoLabel" destination="CMJ-JR-2k1" id="9gG-N2-m0z"/>
                         <outlet property="passwordTextField" destination="pkq-UL-mMy" id="Fhr-Ca-ViY"/>
                         <segue destination="eH9-ts-d1Z" kind="show" identifier="UserLoggedIn" id="jV0-Ez-whI"/>
                     </connections>

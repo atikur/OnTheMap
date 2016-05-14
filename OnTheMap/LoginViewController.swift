@@ -14,7 +14,6 @@ class LoginViewController: UIViewController {
 
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var infoLabel: UILabel!
     
     let otmClient = OTMClient.sharedInstance()
     
@@ -22,26 +21,18 @@ class LoginViewController: UIViewController {
     
     @IBAction func loginButtonPressed(sender: UIButton) {
         guard let email = emailTextField.text, password = passwordTextField.text where !email.isEmpty && !password.isEmpty else {
-            infoLabel.text = "Email/password field empty."
+            OTMClient.showAlert(self, title: "Error", message: "Email/password field empty.")
             return
         }
         
         loginWithEmail(email, password: password)
     }
     
-    // MARK: - Lifecyle Methods
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        infoLabel.text = ""
-    }
-    
     // MARK: -
     
-    func updateInfoLabel(message: String) {
+    func showLoginError(message: String) {
         dispatch_async(dispatch_get_main_queue()) {
-            self.infoLabel.text = message
+            OTMClient.showAlert(self, title: "Login Failed", message: message)
         }
     }
     
@@ -53,7 +44,7 @@ class LoginViewController: UIViewController {
             
             guard error == nil else {
                 print(error)
-                self.updateInfoLabel("Wrong email/password.")
+                self.showLoginError("Wrong email or password.")
                 return
             }
             
@@ -63,7 +54,7 @@ class LoginViewController: UIViewController {
                 userID = accountDict["key"] as? String,
                 sessionID = sessionDict["id"] as? String else {
                     
-                    self.updateInfoLabel("Login failed. Try again later.")
+                    self.showLoginError("Can't process the request. Try again later!")
                     return
             }
                         
