@@ -11,6 +11,8 @@ import MapKit
 
 class PostInfoViewController: UIViewController, UITextViewDelegate {
     
+    let otmClient = OTMClient.sharedInstance()
+    
     let locationTextViewPlaceholderText = "Enter Your Location Here"
     let linkTextViewPlaceholderText = "Enter a Link to Share Here"
     
@@ -121,6 +123,53 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func submitButtonPressed(sender: UIButton) {
+        getUdacityProfileData {
+            profileData, error in
+            guard error == nil else {
+                print(error)
+                return
+            }
+            
+            guard let profileData = profileData else {
+                print("no profile data found")
+                return
+            }
+            
+            print(profileData)
+        }
+    }
+    
+    func getUdacityProfileData(completionHandler: (profileData: (firstName: String, lastName: String)?, error: NSError?) -> Void) {
+        guard let userId = otmClient.udacityUserID else {
+            
+            let userInfo = [NSLocalizedDescriptionKey: "User id not found"]
+            let error = NSError(domain: "getUdacityProfileData", code: 1, userInfo: userInfo)
+            completionHandler(profileData: nil, error: error)
+            return
+        }
+        
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/users/\(userId)")!)
+        
+        otmClient.taskForRequest(request, isUdacityAPI: true) {
+            result, error in
+            
+            guard error == nil else {
+                completionHandler(profileData: nil, error: error)
+                return
+            }
+            
+            guard let userDict = result["user"] as? [String: AnyObject],
+                firstName = userDict["first_name"] as? String,
+                lastName = userDict["last_name"] as? String else {
+                    
+                let userInfo = [NSLocalizedDescriptionKey: "Can't parse profile information"]
+                let error = NSError(domain: "getUdacityProfileData", code: 1, userInfo: userInfo)
+                completionHandler(profileData: nil, error: error)
+                return
+            }
+            
+            completionHandler(profileData: (firstName, lastName), error: nil)
+        }
     }
     
     override func viewDidLoad() {
