@@ -9,32 +9,78 @@
 import UIKit
 import MapKit
 
-class PostInfoViewController: UIViewController, UITextViewDelegate {
+class PostInfoViewController: UIViewController {
+    
+    // MARK: - Outlets
+    
+    @IBOutlet weak var locationTextView: UITextView!
+    @IBOutlet weak var linkTextView: UITextView!
+    
+    @IBOutlet weak var findOnMapButton: UIButton!
+    @IBOutlet weak var submitButton: UIButton!
+    
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    // MARK: - Properteis
     
     let otmClient = OTMClient.sharedInstance()
     
     let locationTextViewPlaceholderText = "Enter Your Location Here"
     let linkTextViewPlaceholderText = "Enter a Link to Share Here"
     
-    @IBOutlet weak var locationTextView: UITextView!
-    @IBOutlet weak var linkTextView: UITextView!
-    @IBOutlet weak var findOnMapButton: UIButton!
-    @IBOutlet weak var submitButton: UIButton!
-    @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
     var locationString: String!
     var locationCoordinate: CLLocationCoordinate2D!
+    
+    // MARK: -
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        locationTextView.delegate = self
+        linkTextView.delegate = self
+        
+        locationTextView.text = locationTextViewPlaceholderText
+        linkTextView.text = linkTextViewPlaceholderText
+        
+        findOnMapButton.layer.cornerRadius = 10
+        submitButton.layer.cornerRadius = 10
+        
+        activityIndicator.hidden = true
+        configureUI(showMap: false)
+    }
+    
+    // MARK: - Actions
     
     @IBAction func cancelButtonPressed(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
     }
+    
     @IBAction func findOnMapButtonPressed(sender: UIButton) {
-        guard let address = locationTextView.text where !address.isEmpty && address != locationTextViewPlaceholderText else {
-            OTMClient.showAlert(self, title: "Location Empty", message: "Please enter a location.")
-            return
+        guard let address = locationTextView.text
+            where !address.isEmpty && address != locationTextViewPlaceholderText else {
+            
+                OTMClient.showAlert(self, title: "Location Empty", message: "Please enter a location.")
+                return
         }
         
+        findOnTheMap(address)
+    }
+    
+    @IBAction func submitButtonPressed(sender: UIButton) {
+        guard let mediaUrl = linkTextView.text
+            where !mediaUrl.isEmpty && mediaUrl != linkTextViewPlaceholderText else {
+                
+                OTMClient.showAlert(self, title: "No Media URL", message: "Please enter media URL.")
+                return
+        }
+        
+        submitStudentDataWithMediaUrl(mediaUrl)
+    }
+    
+    // MARK: -
+    
+    func findOnTheMap(address: String) {
         showActivityIndicator(true)
         
         let geocoder = CLGeocoder()
@@ -42,22 +88,23 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
             placemarks, error in
             
             guard error == nil else {
-                self.showGeocodingError("Geocoding Failed", message: "An error occured. Please try again.")
+                self.showError("Geocoding Failed", message: "An error occured. Please try again.")
                 return
             }
             
             guard let placemarks = placemarks where !placemarks.isEmpty else {
-                self.showGeocodingError("Geocoding Failed", message: "Can't perform geocoding. Please try some other location.")
+                self.showError("Geocoding Failed", message: "Can't perform geocoding. Please try some other location.")
                 return
             }
             
             guard let annotation = self.getAnnotationForPlacemark(placemarks[0]) else {
-                self.showGeocodingError("Geocoding Failed", message: "Can't perform geocoding. Please try some other location.")
+                self.showError("Geocoding Failed", message: "Can't perform geocoding. Please try some other location.")
                 return
             }
             
             self.centerMapOnLocaion(placemarks[0].location!)
             self.mapView.addAnnotation(annotation)
+            
             self.configureUI(showMap: true)
             self.showActivityIndicator(false)
             
@@ -66,11 +113,107 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    func showGeocodingError(title: String, message: String) {
-        dispatch_async(dispatch_get_main_queue()) {
-            OTMClient.showAlert(self, title: title, message: message)
-            self.showActivityIndicator(false)
+    func submitStudentDataWithMediaUrl(mediaUrl: String) {
+        getUdacityProfileData {
+            profileData, error in
+            
+            guard error == nil else {
+                print(error)
+                self.showError("Error", message: "Can't post student information.")
+                return
+            }
+            
+            guard let profileData = profileData else {
+                self.showError("Error", message: "Can't post student information.")
+                return
+            }
+            
+            let studentInfoDict: [String : AnyObject] = [
+                OTMClient.StudentLocationKeys.UniqueKey: self.otmClient.udacityUserID!,
+                OTMClient.StudentLocationKeys.FirstName: profileData.firstName,
+                OTMClient.StudentLocationKeys.LastName: profileData.lastName,
+                OTMClient.StudentLocationKeys.MapString: self.locationString,
+                OTMClient.StudentLocationKeys.MediaURL: mediaUrl,
+                OTMClient.StudentLocationKeys.Latitude: self.locationCoordinate.latitude,
+                OTMClient.StudentLocationKeys.Longitude: self.locationCoordinate.longitude
+            ]
+            
+            let studentInfo = StudentInformation(dictionary: studentInfoDict)
+            self.postStudentInformation(studentInfo)
         }
+    }
+    
+    func postStudentInformation(studentInfo: StudentInformation) {
+        let request = OTMClient.requestForPostingStudentInfo(studentInfo)
+        
+        otmClient.taskForRequest(request, isUdacityAPI: false) {
+            result, error in
+            
+            guard error == nil else {
+                print(error)
+                self.showError("Error", message: "Can't post student information.")
+                return
+            }
+            
+            guard let result = result else {
+                self.showError("Error", message: "Can't post student information.")
+                return
+            }
+            
+            guard let objectId = result["objectId"] else {
+                self.showError("Error", message: "Can't post student information.")
+                return
+            }
+            
+            print("Successfully posted: \(objectId)")
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+    }
+    
+    func getUdacityProfileData(completionHandler: (profileData: (firstName: String, lastName: String)?, error: NSError?) -> Void) {
+        
+        func getErrorWithMessage(message: String) -> NSError {
+            let userInfo = [NSLocalizedDescriptionKey: message]
+            let error = NSError(domain: "getUdacityProfileData", code: 1, userInfo: userInfo)
+            return error
+        }
+        
+        guard let userId = otmClient.udacityUserID else {
+            completionHandler(profileData: nil, error: getErrorWithMessage("User id not found"))
+            return
+        }
+        
+        let request = OTMClient.requestForUdacityProfileData(userId)
+        
+        otmClient.taskForRequest(request, isUdacityAPI: true) {
+            result, error in
+            
+            guard error == nil else {
+                completionHandler(profileData: nil, error: error)
+                return
+            }
+            
+            guard let userDict = result["user"] as? [String: AnyObject],
+                firstName = userDict["first_name"] as? String,
+                lastName = userDict["last_name"] as? String else {
+
+                    completionHandler(profileData: nil, error: getErrorWithMessage("Can't parse profile information"))
+                    return
+            }
+            
+            completionHandler(profileData: (firstName, lastName), error: nil)
+        }
+    }
+    
+    // MARK: - Helpers
+    
+    func centerMapOnLocaion(location: CLLocation) {
+        let regionRedius: CLLocationDistance = 500
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRedius * 2, regionRedius * 2)
+        mapView.setRegion(coordinateRegion, animated: true)
     }
     
     func getAnnotationForPlacemark(placemark: CLPlacemark) -> MKPointAnnotation? {
@@ -85,10 +228,11 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
         return annotation
     }
     
-    func centerMapOnLocaion(location: CLLocation) {
-        let regionRedius: CLLocationDistance = 500
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRedius * 2, regionRedius * 2)
-        mapView.setRegion(coordinateRegion, animated: true)
+    func showError(title: String, message: String) {
+        dispatch_async(dispatch_get_main_queue()) {
+            OTMClient.showAlert(self, title: title, message: message)
+            self.showActivityIndicator(false)
+        }
     }
     
     func stringFromPlacemark(placemark: CLPlacemark) -> String {
@@ -123,111 +267,7 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    @IBAction func submitButtonPressed(sender: UIButton) {
-        guard let mediaUrl = linkTextView.text where !mediaUrl.isEmpty && mediaUrl != linkTextViewPlaceholderText else {
-            OTMClient.showAlert(self, title: "No Media URL", message: "Please enter media URL.")
-            return
-        }
-        
-        getUdacityProfileData {
-            profileData, error in
-            guard error == nil else {
-                print(error)
-                return
-            }
-            
-            guard let profileData = profileData else {
-                print("no profile data found")
-                return
-            }
-                        
-            let studentInfoDict: [String : AnyObject] = [
-                OTMClient.StudentLocationKeys.UniqueKey: self.otmClient.udacityUserID!,
-                OTMClient.StudentLocationKeys.FirstName: profileData.firstName,
-                OTMClient.StudentLocationKeys.LastName: profileData.lastName,
-                OTMClient.StudentLocationKeys.MapString: self.locationString,
-                OTMClient.StudentLocationKeys.MediaURL: mediaUrl,
-                OTMClient.StudentLocationKeys.Latitude: self.locationCoordinate.latitude,
-                OTMClient.StudentLocationKeys.Longitude: self.locationCoordinate.longitude
-            ]
-            
-            let studentInfo = StudentInformation(dictionary: studentInfoDict)
-            self.postStudentInformation(studentInfo)
-        }
-    }
-    
-    func postStudentInformation(studentInfo: StudentInformation) {
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation")!)
-        request.HTTPMethod = "POST"
-        request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
-        request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.HTTPBody = "{\"uniqueKey\": \"\(studentInfo.uniqueKey)\", \"firstName\": \"\(studentInfo.firstName)\", \"lastName\": \"\(studentInfo.lastName)\",\"mapString\": \"\(studentInfo.mapString)\", \"mediaURL\": \"\(studentInfo.mediaURL)\",\"latitude\": \(studentInfo.latitude), \"longitude\": \(studentInfo.longitude)}".dataUsingEncoding(NSUTF8StringEncoding)
-        
-        otmClient.taskForRequest(request, isUdacityAPI: false) {
-            result, error in
-            guard error == nil else {
-                print(error)
-                return
-            }
-            
-            guard let result = result else {
-                return
-            }
-            
-            guard let objectId = result["objectId"] else {
-                return
-            }
-            
-            print("Successfully posted: \(objectId)")
-        }
-    }
-    
-    func getUdacityProfileData(completionHandler: (profileData: (firstName: String, lastName: String)?, error: NSError?) -> Void) {
-        guard let userId = otmClient.udacityUserID else {
-            
-            let userInfo = [NSLocalizedDescriptionKey: "User id not found"]
-            let error = NSError(domain: "getUdacityProfileData", code: 1, userInfo: userInfo)
-            completionHandler(profileData: nil, error: error)
-            return
-        }
-        
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/users/\(userId)")!)
-        
-        otmClient.taskForRequest(request, isUdacityAPI: true) {
-            result, error in
-            
-            guard error == nil else {
-                completionHandler(profileData: nil, error: error)
-                return
-            }
-            
-            guard let userDict = result["user"] as? [String: AnyObject],
-                firstName = userDict["first_name"] as? String,
-                lastName = userDict["last_name"] as? String else {
-                    
-                let userInfo = [NSLocalizedDescriptionKey: "Can't parse profile information"]
-                let error = NSError(domain: "getUdacityProfileData", code: 1, userInfo: userInfo)
-                completionHandler(profileData: nil, error: error)
-                return
-            }
-            
-            completionHandler(profileData: (firstName, lastName), error: nil)
-        }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        locationTextView.delegate = self
-        linkTextView.delegate = self
-        locationTextView.text = locationTextViewPlaceholderText
-        linkTextView.text = linkTextViewPlaceholderText
-        findOnMapButton.layer.cornerRadius = 10
-        activityIndicator.hidden = true
-        
-        configureUI(showMap: false)
-    }
+    // MARK: - Configure UI Controls
     
     func configureUI(showMap showMap: Bool) {
         linkTextView.hidden = !showMap
@@ -244,6 +284,9 @@ class PostInfoViewController: UIViewController, UITextViewDelegate {
             activityIndicator.stopAnimating()
         }
     }
+}
+
+extension PostInfoViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(textView: UITextView) {
         if textView.text == locationTextViewPlaceholderText || textView.text == linkTextViewPlaceholderText {

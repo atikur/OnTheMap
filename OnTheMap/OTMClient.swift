@@ -64,11 +64,29 @@ class OTMClient: NSObject {
     
     // MARK: - Class Methods
     
+    class func requestForUdacityProfileData(userId: String) -> NSURLRequest {
+        return NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/users/\(userId)")!)
+    }
+    
     class func requestForStudentInfoRetrieval() -> NSURLRequest {
         let url = NSURL(string: "https://api.parse.com/1/classes/StudentLocation?limit=100&order=-updatedAt")!
         let request = NSMutableURLRequest(URL: url)
         request.addValue(OTMClient.Constants.ParseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(OTMClient.Constants.ParseApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        
+        return request
+    }
+    
+    class func requestForPostingStudentInfo(studentInfo: StudentInformation) -> NSURLRequest {
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation")!)
+        
+        request.HTTPMethod = "POST"
+        
+        request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        request.HTTPBody = "{\"uniqueKey\": \"\(studentInfo.uniqueKey)\", \"firstName\": \"\(studentInfo.firstName)\", \"lastName\": \"\(studentInfo.lastName)\",\"mapString\": \"\(studentInfo.mapString)\", \"mediaURL\": \"\(studentInfo.mediaURL)\",\"latitude\": \(studentInfo.latitude), \"longitude\": \(studentInfo.longitude)}".dataUsingEncoding(NSUTF8StringEncoding)
         
         return request
     }
