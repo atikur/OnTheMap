@@ -40,4 +40,28 @@ extension OTMClient {
         }
     }
     
+    func getStudentInformation(completionHandler: (success: Bool, errorString: String?) -> Void) {
+        let request = OTMClient.requestForStudentInfoRetrieval()
+        
+        taskForRequest(request, isUdacityAPI: false) {
+            result, error in
+            
+            guard error == nil else {
+                print(error)
+                completionHandler(success: false, errorString: error?.localizedDescription)
+                return
+            }
+            
+            guard let result = result,
+                studentInfoResults = result["results"] as? [[String: AnyObject]] else {
+                    
+                    completionHandler(success: false, errorString: "Can't get student information.")
+                    return
+            }
+            
+            self.studentList = StudentInformation.studentInformationFromResults(studentInfoResults)
+            completionHandler(success: true, errorString: nil)
+        }
+    }
+    
 }
