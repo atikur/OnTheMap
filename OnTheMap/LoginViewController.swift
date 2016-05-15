@@ -34,38 +34,25 @@ class LoginViewController: UIViewController {
     // MARK: -
     
     func loginWithEmail(email: String, password: String) {
-        let request = OTMClient.requestForUdacityLogin(email, password: password)
-        
-        otmClient.taskForRequest(request, isUdacityAPI: true) {
-            result, error in
-            
-            guard error == nil else {
-                print(error)
-                self.showLoginError("Wrong email or password.")
-                return
-            }
-            
-            guard let result = result,
-                accountDict = result["account"] as? [String: AnyObject],
-                sessionDict = result["session"] as? [String: AnyObject],
-                userID = accountDict["key"] as? String,
-                sessionID = sessionDict["id"] as? String else {
-                    
-                    self.showLoginError("Can't process the request. Try again later!")
-                    return
-            }
-                        
-            self.otmClient.udacitySessionID = sessionID
-            self.otmClient.udacityUserID = userID
+        otmClient.authenticate(email, password: password) {
+            success, errorString in
             
             dispatch_async(dispatch_get_main_queue()) {
-                self.performSegueWithIdentifier("UserLoggedIn", sender: nil)
+                if success {
+                    self.completeLogin()
+                } else {
+                    self.showLoginError(errorString)
+                }
             }
         }
     }
     
-    func showLoginError(message: String) {
-        dispatch_async(dispatch_get_main_queue()) {
+    func completeLogin() {
+        self.performSegueWithIdentifier("UserLoggedIn", sender: nil)
+    }
+    
+    func showLoginError(message: String?) {
+        if let message = message {
             OTMClient.showAlert(self, title: "Login Failed", message: message)
         }
     }
