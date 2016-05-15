@@ -20,7 +20,7 @@ class StudentMapViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func logoutButtonPressed(sender: UIBarButtonItem) {
-        OTMClient.logoutWithViewController(self)
+        OTMClient.logoutFromViewController(self)
     }
     
     // MARK: -

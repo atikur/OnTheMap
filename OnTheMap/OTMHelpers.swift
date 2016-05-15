@@ -17,7 +17,7 @@ extension OTMClient {
         hostVC.presentViewController(alertController, animated: true, completion: nil)
     }
     
-    class func logoutWithViewController(hostVC: UIViewController) {
+    class func logoutFromViewController(hostVC: UIViewController) {
         OTMClient.sharedInstance().logout {
             success, errorString in
             
