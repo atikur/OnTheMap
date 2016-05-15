@@ -30,18 +30,21 @@ class OTMClient: NSObject {
             }
             
             guard error == nil else {
-                sendError("There was an error with your request: \(error)")
-                return
-            }
-            
-            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                sendError("Your request returned a status code other than 2xx!")
+                completionHandler(result: nil, error: error)
                 return
             }
             
             guard let data = data else {
                 sendError("No data was returned by the request!")
                 return
+            }
+            
+            // because Udacity API return status code 403 for wrong username/password
+            if !isUdacityAPI {
+                guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+                    sendError("Your request returned a status code other than 2xx!")
+                    return
+                }
             }
             
             let newData = isUdacityAPI ? data.subdataWithRange(NSMakeRange(5, data.length - 5)) : data

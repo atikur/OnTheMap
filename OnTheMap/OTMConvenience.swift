@@ -18,17 +18,18 @@ extension OTMClient {
             result, error in
             
             guard error == nil else {
-                completionHandler(success: false, errorString: "Wrong email or password")
+                print(error)
+                completionHandler(success: false, errorString: error?.localizedDescription)
                 return
             }
-            
+                        
             guard let result = result,
                 accountDict = result["account"] as? [String: AnyObject],
                 sessionDict = result["session"] as? [String: AnyObject],
                 userID = accountDict["key"] as? String,
                 sessionID = sessionDict["id"] as? String else {
                     
-                    completionHandler(success: false, errorString: "Can't process the request. Try again later!")
+                    completionHandler(success: false, errorString: "Wrong email or password.")
                     return
             }
             
