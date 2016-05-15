@@ -173,7 +173,7 @@ class PostInfoViewController: UIViewController {
                     if let presenter = navController.viewControllers[0] as? StudentMapViewController {
                         presenter.refreshMapAnnotations()
                     } else if let presenter = navController.viewControllers[0] as? StudentListViewController {
-                        presenter.getStudentInfo()
+                        OTMClient.getStudentInfoWithViewController(presenter)
                     }
                 }
                 

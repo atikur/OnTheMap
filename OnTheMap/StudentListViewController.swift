@@ -17,7 +17,7 @@ class StudentListViewController: UITableViewController {
     // MARK: - Actions
     
     @IBAction func logoutButtonPressed(sender: UIBarButtonItem) {
-        logout()
+        OTMClient.logoutWithViewController(self)
     }
     
     // MARK: -
@@ -37,65 +37,6 @@ class StudentListViewController: UITableViewController {
     func studentInfoReceived() {
         dispatch_async(dispatch_get_main_queue()) {
             self.tableView.reloadData()
-        }
-    }
-    
-    // MARK: -
-    
-    func logout() {
-        let request = OTMClient.requestForUdacityLogout()
-        
-        otmClient.taskForRequest(request, isUdacityAPI: true) {
-            result, error in
-            
-            guard error == nil else {
-                print(error)
-                return
-            }
-            
-            guard let result = result,
-                sessionDict = result["session"] as? [String: AnyObject],
-                sessionID = sessionDict["id"] as? String else {
-                    return
-            }
-            
-            self.otmClient.udacitySessionID = nil
-            self.otmClient.udacityUserID = nil
-            self.otmClient.studentList = []
-            
-            print("logged out successfully: \(sessionID)")
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
-        }
-    }
-    
-    func getStudentInfo() {
-        let request = OTMClient.requestForStudentInfoRetrieval()
-        
-        otmClient.taskForRequest(request, isUdacityAPI: false) {
-            result, error in
-            
-            guard error == nil else {
-                print(error)
-                self.displayError("Error", message: "Can't get student information.")
-                return
-            }
-            
-            guard let result = result, studentInfoResults = result["results"] as? [[String: AnyObject]] else {
-                self.displayError("Error", message: "Can't get student information.")
-                return
-            }
-            
-            self.otmClient.studentList = StudentInformation.studentInformationFromResults(studentInfoResults)
-            NSNotificationCenter.defaultCenter().postNotificationName(DidReceiveStudentInfoNotification, object: nil)
-        }
-    }
-    
-    func displayError(title: String, message: String) {
-        dispatch_async(dispatch_get_main_queue()) {
-            OTMClient.showAlert(self, title: title, message: message)
         }
     }
 
