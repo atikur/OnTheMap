@@ -64,6 +64,84 @@ extension OTMClient {
         }
     }
     
+    func submitStudentInformationToParse(studentInfoDict: [String : AnyObject], completionHandler: (success: Bool, errorString: String?) -> Void) {
+        
+        var studentDict = studentInfoDict
+        
+        getUdacityProfileData {
+            profileData, errorString in
+            
+            guard let profileData = profileData else {
+                completionHandler(success: false, errorString: errorString)
+                return
+            }
+            
+            studentDict[StudentLocationKeys.FirstName] = profileData.firstName
+            studentDict[StudentLocationKeys.LastName] = profileData.lastName
+            
+            let studentInfo = StudentInformation(dictionary: studentDict)
+            self.postStudentInformation(studentInfo, completionHandler: completionHandler)
+        }
+    }
+    
+    private func postStudentInformation(studentInfo: StudentInformation, completionHandler: (success: Bool, errorString: String?) -> Void) {
+        let request = OTMClient.requestForPostingStudentInfo(studentInfo)
+        
+        taskForRequest(request, isUdacityAPI: false) {
+            result, error in
+            
+            guard error == nil else {
+                print(error)
+                completionHandler(success: false, errorString: error?.localizedDescription)
+                return
+            }
+            
+            guard let result = result else {
+                completionHandler(success: false, errorString: "Can't post student information.")
+                return
+            }
+            
+            guard let objectId = result["objectId"] else {
+                completionHandler(success: false, errorString: "Can't post student information.")
+                return
+            }
+            
+            print("Successfully posted: \(objectId)")
+            
+            completionHandler(success: true, errorString: nil)
+        }
+    }
+    
+    private func getUdacityProfileData(completionHandler: (profileData: (firstName: String, lastName: String)?, errorString: String?) -> Void) {
+        
+        guard let userId = udacityUserID else {
+            completionHandler(profileData: nil, errorString: "Can't get user data.")
+            return
+        }
+        
+        let request = OTMClient.requestForUdacityProfileDataRetrieval(userId)
+        
+        taskForRequest(request, isUdacityAPI: true) {
+            result, error in
+            
+            guard error == nil else {
+                print(error)
+                completionHandler(profileData: nil, errorString: error?.localizedDescription)
+                return
+            }
+            
+            guard let userDict = result["user"] as? [String: AnyObject],
+                firstName = userDict["first_name"] as? String,
+                lastName = userDict["last_name"] as? String else {
+                    
+                    completionHandler(profileData: nil, errorString: "Can't get user data.")
+                    return
+            }
+            
+            completionHandler(profileData: (firstName, lastName), errorString: nil)
+        }
+    }
+    
     func logout(completionHandler: (success: Bool, errorString: String?) -> Void)  {
         let request = OTMClient.requestForUdacityLogout()
         

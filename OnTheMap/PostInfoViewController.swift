@@ -114,107 +114,37 @@ class PostInfoViewController: UIViewController {
     }
     
     func submitStudentDataWithMediaUrl(mediaUrl: String) {
-        getUdacityProfileData {
-            profileData, error in
-            
-            guard error == nil else {
-                print(error)
-                self.showError("Error", message: "Can't post student information.")
-                return
-            }
-            
-            guard let profileData = profileData else {
-                self.showError("Error", message: "Can't post student information.")
-                return
-            }
-            
-            let studentInfoDict: [String : AnyObject] = [
-                OTMClient.StudentLocationKeys.UniqueKey: self.otmClient.udacityUserID!,
-                OTMClient.StudentLocationKeys.FirstName: profileData.firstName,
-                OTMClient.StudentLocationKeys.LastName: profileData.lastName,
-                OTMClient.StudentLocationKeys.MapString: self.locationString,
-                OTMClient.StudentLocationKeys.MediaURL: mediaUrl,
-                OTMClient.StudentLocationKeys.Latitude: self.locationCoordinate.latitude,
-                OTMClient.StudentLocationKeys.Longitude: self.locationCoordinate.longitude
-            ]
-            
-            let studentInfo = StudentInformation(dictionary: studentInfoDict)
-            self.postStudentInformation(studentInfo)
-        }
-    }
-    
-    func postStudentInformation(studentInfo: StudentInformation) {
-        let request = OTMClient.requestForPostingStudentInfo(studentInfo)
+        let studentInfoDict: [String : AnyObject] = [
+            OTMClient.StudentLocationKeys.UniqueKey: self.otmClient.udacityUserID!,
+            OTMClient.StudentLocationKeys.MapString: self.locationString,
+            OTMClient.StudentLocationKeys.MediaURL: mediaUrl,
+            OTMClient.StudentLocationKeys.Latitude: self.locationCoordinate.latitude,
+            OTMClient.StudentLocationKeys.Longitude: self.locationCoordinate.longitude
+        ]
         
-        otmClient.taskForRequest(request, isUdacityAPI: false) {
-            result, error in
-            
-            guard error == nil else {
-                print(error)
-                self.showError("Error", message: "Can't post student information.")
-                return
-            }
-            
-            guard let result = result else {
-                self.showError("Error", message: "Can't post student information.")
-                return
-            }
-            
-            guard let objectId = result["objectId"] else {
-                self.showError("Error", message: "Can't post student information.")
-                return
-            }
-            
-            print("Successfully posted: \(objectId)")
+        otmClient.submitStudentInformationToParse(studentInfoDict) {
+            success, errorString in
             
             dispatch_async(dispatch_get_main_queue()) {
-                
-                if let navController = (self.presentingViewController as? UITabBarController)?.selectedViewController as? UINavigationController {
-                    if let presenter = navController.viewControllers[0] as? StudentMapViewController {
-                        presenter.refreshMapAnnotations()
-                    } else if let presenter = navController.viewControllers[0] as? StudentListViewController {
-                        OTMClient.getStudentInfoWithViewController(presenter)
-                    }
+                if success {
+                    self.studentInformationSubmitted()
+                } else {
+                    OTMClient.displayError(self, title: "Error", message: errorString)
                 }
-                
-                self.dismissViewControllerAnimated(true, completion: nil)
             }
         }
     }
     
-    func getUdacityProfileData(completionHandler: (profileData: (firstName: String, lastName: String)?, error: NSError?) -> Void) {
-        
-        func sendError(message: String) -> NSError {
-            let userInfo = [NSLocalizedDescriptionKey: message]
-            let error = NSError(domain: "getUdacityProfileData", code: 1, userInfo: userInfo)
-            return error
-        }
-        
-        guard let userId = otmClient.udacityUserID else {
-            completionHandler(profileData: nil, error: sendError("User id not found"))
-            return
-        }
-        
-        let request = OTMClient.requestForUdacityProfileDataRetrieval(userId)
-        
-        otmClient.taskForRequest(request, isUdacityAPI: true) {
-            result, error in
-            
-            guard error == nil else {
-                completionHandler(profileData: nil, error: error)
-                return
+    func studentInformationSubmitted() {
+        if let navController = (self.presentingViewController as? UITabBarController)?.selectedViewController as? UINavigationController {
+            if let presenter = navController.viewControllers[0] as? StudentMapViewController {
+                presenter.refreshMapAnnotations()
+            } else if let presenter = navController.viewControllers[0] as? StudentListViewController {
+                OTMClient.getStudentInfoWithViewController(presenter)
             }
-            
-            guard let userDict = result["user"] as? [String: AnyObject],
-                firstName = userDict["first_name"] as? String,
-                lastName = userDict["last_name"] as? String else {
-
-                    completionHandler(profileData: nil, error: sendError("Can't parse profile information"))
-                    return
-            }
-            
-            completionHandler(profileData: (firstName, lastName), error: nil)
         }
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: - Helpers
