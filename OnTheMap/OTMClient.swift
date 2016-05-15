@@ -63,14 +63,24 @@ class OTMClient: NSObject {
         }
     }
     
+    func substituteKeyInURLString(urlString: String, key: String, value: String) -> String? {
+        if urlString.rangeOfString("{\(key)}") != nil {
+            return urlString.stringByReplacingOccurrencesOfString("{\(key)}", withString: value)
+        } else {
+            return nil
+        }
+    }
+    
     // MARK: - NSURLRequests
     
     class func requestForUdacityProfileDataRetrieval(userId: String) -> NSURLRequest {
-        return NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/users/\(userId)")!)
+        let urlString = OTMClient.sharedInstance().substituteKeyInURLString(UdacityURL.UserProfile, key: "id", value: userId)
+        
+        return NSMutableURLRequest(URL: NSURL(string: urlString!)!)
     }
     
     class func requestForStudentInfoRetrieval() -> NSURLRequest {
-        let url = NSURL(string: "https://api.parse.com/1/classes/StudentLocation?limit=100&order=-updatedAt")!
+        let url = NSURL(string: "\(ParseURL.StudentLocation)?limit=100&order=-updatedAt")!
         let request = NSMutableURLRequest(URL: url)
         request.addValue(OTMClient.Constants.ParseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(OTMClient.Constants.ParseApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
@@ -79,12 +89,12 @@ class OTMClient: NSObject {
     }
     
     class func requestForPostingStudentInfo(studentInfo: StudentInformation) -> NSURLRequest {
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation")!)
+        let request = NSMutableURLRequest(URL: NSURL(string: ParseURL.StudentLocation)!)
         
         request.HTTPMethod = "POST"
         
-        request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
-        request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
+        request.addValue(Constants.ParseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(Constants.ParseApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         request.HTTPBody = "{\"uniqueKey\": \"\(studentInfo.uniqueKey)\", \"firstName\": \"\(studentInfo.firstName)\", \"lastName\": \"\(studentInfo.lastName)\",\"mapString\": \"\(studentInfo.mapString)\", \"mediaURL\": \"\(studentInfo.mediaURL)\",\"latitude\": \(studentInfo.latitude), \"longitude\": \(studentInfo.longitude)}".dataUsingEncoding(NSUTF8StringEncoding)
@@ -93,7 +103,7 @@ class OTMClient: NSObject {
     }
     
     class func requestForUdacityLogin(username: String, password: String) -> NSURLRequest {
-        let url = NSURL(string: "https://www.udacity.com/api/session")!
+        let url = NSURL(string: UdacityURL.Auth)!
         let requestBody = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}".dataUsingEncoding(NSUTF8StringEncoding)
         
         let request = NSMutableURLRequest(URL: url)
@@ -108,7 +118,7 @@ class OTMClient: NSObject {
     }
     
     class func requestForUdacityLogout() -> NSURLRequest {
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/session")!)
+        let request = NSMutableURLRequest(URL: NSURL(string: UdacityURL.Auth)!)
         request.HTTPMethod = "DELETE"
         var xsrfCookie: NSHTTPCookie? = nil
         let sharedCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()

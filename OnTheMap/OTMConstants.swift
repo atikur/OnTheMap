@@ -29,4 +29,13 @@ extension OTMClient {
         static let Acl = "ACL"
     }
     
+    struct UdacityURL {
+        static let Auth = "https://www.udacity.com/api/session"
+        static let UserProfile = "https://www.udacity.com/api/users/{id}"
+    }
+    
+    struct ParseURL {
+        static let StudentLocation = "https://api.parse.com/1/classes/StudentLocation"
+    }
+    
 }
