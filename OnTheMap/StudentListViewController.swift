@@ -13,6 +13,7 @@ class StudentListViewController: UITableViewController {
     // MARK: - Properties
     
     let otmClient = OTMClient.sharedInstance()
+    let otmModel = OTMModel.sharedInstance()
     
     // MARK: - Actions
     
@@ -43,11 +44,11 @@ class StudentListViewController: UITableViewController {
     // MARK: -
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return otmClient.studentList.count
+        return otmModel.studentList.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let studentInfo = otmClient.studentList[indexPath.row]
+        let studentInfo = otmModel.studentList[indexPath.row]
         
         let cell = tableView.dequeueReusableCellWithIdentifier("StudentLocationCell")!
         cell.textLabel?.text = studentInfo.firstName + " " + studentInfo.lastName
@@ -56,7 +57,7 @@ class StudentListViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let studentInfo = otmClient.studentList[indexPath.row]
+        let studentInfo = otmModel.studentList[indexPath.row]
         
         if let url = NSURL(string: studentInfo.mediaURL) {
             UIApplication.sharedApplication().openURL(url)

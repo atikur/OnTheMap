@@ -59,7 +59,7 @@ extension OTMClient {
                     return
             }
             
-            self.studentList = StudentInformation.studentInformationFromResults(studentInfoResults)
+            OTMModel.sharedInstance().studentList = StudentInformation.studentInformationFromResults(studentInfoResults)
             completionHandler(success: true, errorString: nil)
         }
     }
@@ -86,7 +86,7 @@ extension OTMClient {
             
             self.udacitySessionID = nil
             self.udacityUserID = nil
-            self.studentList = []
+            OTMModel.sharedInstance().studentList = []
             
             print("logged out successfully: \(sessionID)")
             completionHandler(success: true, errorString: nil)

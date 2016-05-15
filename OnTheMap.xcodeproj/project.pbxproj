@@ -16,6 +16,7 @@
 		24390BDD1CE2D47900F45C67 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24390BDB1CE2D47900F45C67 /* Main.storyboard */; };
 		24390BDF1CE2D47900F45C67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24390BDE1CE2D47900F45C67 /* Assets.xcassets */; };
 		24390BE21CE2D47900F45C67 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24390BE01CE2D47900F45C67 /* LaunchScreen.storyboard */; };
+		247B07F01CE89CE50081F711 /* OTMModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247B07EF1CE89CE50081F711 /* OTMModel.swift */; };
 		24A426F51CE728C2003FF2D6 /* OTMHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A426F41CE728C2003FF2D6 /* OTMHelpers.swift */; };
 		24BC9CB31CE44B7100371CE1 /* OTMConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24BC9CB21CE44B7100371CE1 /* OTMConstants.swift */; };
 		24BC9CB51CE44C2200371CE1 /* StudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24BC9CB41CE44C2200371CE1 /* StudentInformation.swift */; };
@@ -36,6 +37,7 @@
 		24390BDE1CE2D47900F45C67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		24390BE11CE2D47900F45C67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		24390BE31CE2D47900F45C67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		247B07EF1CE89CE50081F711 /* OTMModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMModel.swift; sourceTree = "<group>"; };
 		24A426F41CE728C2003FF2D6 /* OTMHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMHelpers.swift; sourceTree = "<group>"; };
 		24BC9CB21CE44B7100371CE1 /* OTMConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMConstants.swift; sourceTree = "<group>"; };
 		24BC9CB41CE44C2200371CE1 /* StudentInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentInformation.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 		24A426F71CE730A0003FF2D6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				247B07EF1CE89CE50081F711 /* OTMModel.swift */,
 				24F9847E1CE42675000686F9 /* OTMClient.swift */,
 				2421AD651CE82E280084EDFE /* OTMClient+URLRequest.swift */,
 				2421AD671CE82F380084EDFE /* OTMConvenience.swift */,
@@ -187,6 +190,7 @@
 				24A426F51CE728C2003FF2D6 /* OTMHelpers.swift in Sources */,
 				2421AD681CE82F380084EDFE /* OTMConvenience.swift in Sources */,
 				24F9847F1CE42675000686F9 /* OTMClient.swift in Sources */,
+				247B07F01CE89CE50081F711 /* OTMModel.swift in Sources */,
 				24BC9CB31CE44B7100371CE1 /* OTMConstants.swift in Sources */,
 				24D8A8401CE4832F00503165 /* StudentListViewController.swift in Sources */,
 				241C0FB01CE4A51E00B9CB38 /* StudentAnnotation.swift in Sources */,

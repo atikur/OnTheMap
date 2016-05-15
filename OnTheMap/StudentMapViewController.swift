@@ -16,6 +16,7 @@ class StudentMapViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     
     let otmClient = OTMClient.sharedInstance()
+    let otmModel = OTMModel.sharedInstance()
     
     // MARK: - Actions
     
@@ -36,7 +37,7 @@ class StudentMapViewController: UIViewController {
     
     func studentInfoReceived() {
         dispatch_async(dispatch_get_main_queue()) {
-            let studentLocations = self.otmClient.studentList.map { self.getStudentAnnotation($0) }
+            let studentLocations = self.otmModel.studentList.map { self.getStudentAnnotation($0) }
             self.mapView.addAnnotations(studentLocations)
             
             self.mapView.showAnnotations([studentLocations[0]], animated: true)

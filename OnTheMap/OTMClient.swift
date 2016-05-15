@@ -13,7 +13,6 @@ class OTMClient: NSObject {
     // MARK: - Properteis
     
     let session = NSURLSession.sharedSession()
-    var studentList = [StudentInformation]()
 
     var udacitySessionID: String?
     var udacityUserID: String?
