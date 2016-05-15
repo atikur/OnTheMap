@@ -20,14 +20,14 @@ class StudentMapViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func logoutButtonPressed(sender: UIBarButtonItem) {
-        logout()
+        OTMClient.logoutWithViewController(self)
     }
     
     // MARK: -
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getStudentInfo()
+        OTMClient.getStudentInfoWithViewController(self)
         
         mapView.delegate = self
         
@@ -49,45 +49,11 @@ class StudentMapViewController: UIViewController {
     
     // MARK: -
     
-    func logout() {
-        otmClient.logout {
-            success, errorString in
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                if success {
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                } else {
-                    self.displayError("Logout Failed", message: errorString)
-                }
-            }
-        }
-    }
-    
-    func getStudentInfo() {
-        otmClient.getStudentInformation {
-            success, errorString in
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                if success {
-                    NSNotificationCenter.defaultCenter().postNotificationName(DidReceiveStudentInfoNotification, object: nil)
-                } else {
-                    self.displayError("Error", message: errorString)
-                }
-            }
-        }
-    }
-    
-    func displayError(title: String, message: String?) {
-        if let message = message {
-            OTMClient.showAlert(self, title: title, message: message)
-        }
-    }
-    
     func refreshMapAnnotations() {
         let existingAnnotations = mapView.annotations
         mapView.removeAnnotations(existingAnnotations)
         
-        getStudentInfo()
+        OTMClient.getStudentInfoWithViewController(self)
     }
     
     // MARK: -

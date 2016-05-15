@@ -17,4 +17,37 @@ extension OTMClient {
         hostVC.presentViewController(alertController, animated: true, completion: nil)
     }
     
+    class func logoutWithViewController(hostVC: UIViewController) {
+        OTMClient.sharedInstance().logout {
+            success, errorString in
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                if success {
+                    hostVC.dismissViewControllerAnimated(true, completion: nil)
+                } else {
+                    displayError(hostVC, title: "Logout Failed", message: errorString)
+                }
+            }
+        }
+    }
+    
+    class func getStudentInfoWithViewController(hostVC: UIViewController) {
+        OTMClient.sharedInstance().getStudentInformation {
+            success, errorString in
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                if success {
+                    NSNotificationCenter.defaultCenter().postNotificationName(DidReceiveStudentInfoNotification, object: nil)
+                } else {
+                    displayError(hostVC, title: "Error", message: errorString)
+                }
+            }
+        }
+    }
+    
+    class func displayError(hostVC: UIViewController, title: String, message: String?) {
+        if let message = message {
+            showAlert(hostVC, title: title, message: message)
+        }
+    }
 }
