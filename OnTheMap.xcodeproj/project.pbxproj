@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		240ACFD81CE5E92C007326B6 /* PostInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 240ACFD71CE5E92C007326B6 /* PostInfoViewController.swift */; };
 		241C0FB01CE4A51E00B9CB38 /* StudentAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241C0FAF1CE4A51E00B9CB38 /* StudentAnnotation.swift */; };
+		2421AD661CE82E280084EDFE /* OTMClient+URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2421AD651CE82E280084EDFE /* OTMClient+URLRequest.swift */; };
 		24390BD81CE2D47900F45C67 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24390BD71CE2D47900F45C67 /* AppDelegate.swift */; };
 		24390BDA1CE2D47900F45C67 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24390BD91CE2D47900F45C67 /* LoginViewController.swift */; };
 		24390BDD1CE2D47900F45C67 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24390BDB1CE2D47900F45C67 /* Main.storyboard */; };
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		240ACFD71CE5E92C007326B6 /* PostInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostInfoViewController.swift; sourceTree = "<group>"; };
 		241C0FAF1CE4A51E00B9CB38 /* StudentAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentAnnotation.swift; sourceTree = "<group>"; };
+		2421AD651CE82E280084EDFE /* OTMClient+URLRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OTMClient+URLRequest.swift"; sourceTree = "<group>"; };
 		24390BD41CE2D47900F45C67 /* OnTheMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnTheMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24390BD71CE2D47900F45C67 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		24390BD91CE2D47900F45C67 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				24F9847E1CE42675000686F9 /* OTMClient.swift */,
+				2421AD651CE82E280084EDFE /* OTMClient+URLRequest.swift */,
 				24BC9CB21CE44B7100371CE1 /* OTMConstants.swift */,
 				24A426F41CE728C2003FF2D6 /* OTMHelpers.swift */,
 				24BC9CB41CE44C2200371CE1 /* StudentInformation.swift */,
@@ -175,6 +178,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2421AD661CE82E280084EDFE /* OTMClient+URLRequest.swift in Sources */,
 				24BC9CB51CE44C2200371CE1 /* StudentInformation.swift in Sources */,
 				24390BDA1CE2D47900F45C67 /* LoginViewController.swift in Sources */,
 				24A426F51CE728C2003FF2D6 /* OTMHelpers.swift in Sources */,
