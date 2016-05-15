@@ -24,7 +24,7 @@ class LoginViewController: UIViewController {
             password = passwordTextField.text
             where !email.isEmpty && !password.isEmpty else {
                 
-                OTMClient.showAlert(self, title: "Error", message: "Email/password field empty.")
+                OTMClient.displayError(self, title: "Error", message: "Email/password field empty.")
                 return
         }
         
@@ -41,7 +41,7 @@ class LoginViewController: UIViewController {
                 if success {
                     self.completeLogin()
                 } else {
-                    self.showLoginError(errorString)
+                    OTMClient.displayError(self, title: "Login Failed", message: errorString)
                 }
             }
         }
@@ -49,12 +49,6 @@ class LoginViewController: UIViewController {
     
     func completeLogin() {
         self.performSegueWithIdentifier("UserLoggedIn", sender: nil)
-    }
-    
-    func showLoginError(message: String?) {
-        if let message = message {
-            OTMClient.showAlert(self, title: "Login Failed", message: message)
-        }
     }
 }
 

@@ -39,7 +39,7 @@ class OTMClient: NSObject {
                 return
             }
             
-            // because Udacity API return status code 403 for wrong username/password
+            // because Udacity API returns status code 403 for wrong username/password
             if !isUdacityAPI {
                 guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
                     sendError("Your request returned a status code other than 2xx!")
