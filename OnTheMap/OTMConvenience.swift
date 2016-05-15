@@ -64,4 +64,33 @@ extension OTMClient {
         }
     }
     
+    func logout(completionHandler: (success: Bool, errorString: String?) -> Void)  {
+        let request = OTMClient.requestForUdacityLogout()
+        
+        taskForRequest(request, isUdacityAPI: true) {
+            result, error in
+            
+            guard error == nil else {
+                print(error)
+                completionHandler(success: false, errorString: error?.localizedDescription)
+                return
+            }
+            
+            guard let result = result,
+                sessionDict = result["session"] as? [String: AnyObject],
+                sessionID = sessionDict["id"] as? String else {
+                    
+                    completionHandler(success: false, errorString: "An error occurred. Try again later.")
+                    return
+            }
+            
+            self.udacitySessionID = nil
+            self.udacityUserID = nil
+            self.studentList = []
+            
+            print("logged out successfully: \(sessionID)")
+            completionHandler(success: true, errorString: nil)
+        }
+    }
+    
 }

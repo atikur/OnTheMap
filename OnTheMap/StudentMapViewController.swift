@@ -50,32 +50,15 @@ class StudentMapViewController: UIViewController {
     // MARK: -
     
     func logout() {
-        let request = OTMClient.requestForUdacityLogout()
-        
-        otmClient.taskForRequest(request, isUdacityAPI: true) {
-            result, error in
-            
-            guard error == nil else {
-                print(error)
-                self.displayError("Logout Failed", message: "An error occurred. Try again later.")
-                return
-            }
-            
-            guard let result = result,
-                sessionDict = result["session"] as? [String: AnyObject],
-                sessionID = sessionDict["id"] as? String else {
-                    self.displayError("Logout Failed", message: "An error occurred. Try again later.")
-                    return
-            }
-            
-            self.otmClient.udacitySessionID = nil
-            self.otmClient.udacityUserID = nil
-            self.otmClient.studentList = []
-            
-            print("logged out successfully: \(sessionID)")
+        otmClient.logout {
+            success, errorString in
             
             dispatch_async(dispatch_get_main_queue()) {
-                self.dismissViewControllerAnimated(true, completion: nil)
+                if success {
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                } else {
+                    self.displayError("Logout Failed", message: errorString)
+                }
             }
         }
     }
